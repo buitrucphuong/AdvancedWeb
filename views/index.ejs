@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/logo.jpg">
+    <title>Social</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700">
+    <!-- Custom styles for this template -->
+    <link href="stylesheets/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="main-wrapper">
+        <%- include('./layouts/nav.ejs') %>
+        
+        <div class="content-body">
+            <div class="row">
+                <div class="col-12">
+                    <!-- <div class="fixed-top alert alert-primary alert-dismissible content-body__alert">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <i class="fas fa-bell"></i> 
+                        Khoa CNTT vừa đăng thông báo mới: <a href="#">Kết quả chấm phúc khảo môn Phương pháp lập trình</a>
+                    </div> -->
+                    <div class="card">
+                        <div class="card__body card__body--up">
+                            <a href="/personal">
+                                <img  class="mr-2" src="images/form-user.png" width="40" height="40">
+                            </a>
+                            <input type="text" class="form-control thinking" id="usr" placeholder="Bạn đang nghĩ gì?">
+                        </div>
+                    </div>
+                    <div id="load_data"></div>
+                    <div id="load_data_message"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="javascripts/main.js"></script>
+</body>
+
+</html>

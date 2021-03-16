@@ -1,0 +1,113 @@
+<nav class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm bg-white navbar-index">
+    <label for="nav-tablet-input" class="nav__bars-btn">
+        <i class="fas fa-bars"></i>
+    </label>
+    <li class="nav-item nav-item-search">
+        <a href="/"><img  class="mr-2" src="images/logo.jpg" width="28" height="28"></a> 
+        <input type="text" class="form-control search" id="usr" placeholder="Tìm kiếm...">   
+        <a class="nav-link nav-item-md"  href="/personal">
+            <img  class="mr-2" src="images/form-user.png" width="28" height="28"><b>Phương</b>
+        </a>
+    </li>
+    
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        </ul>
+        <ul class="navbar-nav  mt-lg-0">
+            <li class="nav-item nav-item-mduser">
+                <a class="nav-link"  href="/personal">
+                    <img  class="mr-2" src="images/form-user.png" width="28" height="28"><b>Phương</b>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link sign-out" href="#"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<input type="checkbox" name="" class="nav__input" id="nav-tablet-input" hidden>
+<label for="nav-tablet-input" class="nav__bars-btn">
+    <i class="fas fa-bars"></i>
+</label>
+<label for="nav-tablet-input" class="nav__overlay"></label>
+
+<nav class="nav__tablet nav__tablet-input">
+    <label for="nav-tablet-input" class="nav__tablet-close">
+        <i class="fas fa-times"></i>    
+    </label>
+    <ul class="navbar-nav nav__tablet-list">
+        <li>
+            <a href="/personal" class="nav__tablet-link"><i class="fa fa-home"></i> Trang chủ</a>
+        </li>
+        <li>
+            <a href="/notification" class="nav__tablet-link"><i class="fa fa-bell"></i> Thông báo mới</a>
+        </li>
+        <input type="checkbox" name="" class="nav__input-sidetop" id="nav-sidebar-inputtop" hidden>
+        <label for="nav-sidebar-inputtop" href="#" class="nav__tablet-link"><i class="fa fa-th-list"></i> Phân loại thông báo <i class="fa fa-caret-down"></i></label>
+        <li class="nav-sidebar-litop">
+            <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
+            <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-image"></i> Chủ đề</a>
+            <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
+        </li>
+        <input type="checkbox" name="" class="nav__input-sidebot" id="nav-sidebar-inputbot" hidden>
+        <label for="nav-sidebar-inputbot" href="#" class="nav__tablet-link"><i class="fa fa-users"></i> Cổng thông tin <i class="fa fa-caret-down"></i></label>
+        <li class="nav-sidebar-libot">
+            <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-user"></i> Sinh viên</a>
+            <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-user-graduate"></i> Học viên (Sau đại học)</a>
+            <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-user-tie"></i> Sinh viên (Ban cao đẳng/TCCN)</a>
+        </li>
+        <li>
+            <a class="nav__tablet-link"  href="/personal">
+                <img  class="mr-2" src="images/form-user.png" width="28" height="28"><b>Phương</b>
+            </a>
+        </li>
+        <li>
+            <a class="nav__tablet-link sign-out" href="#"><i class="fa fa-sign-out-alt"></i> Đăng xuất</a>
+        </li>
+    </ul>
+</nav>
+<nav class="nk-sidebar">           
+    <div id="sidebar-wrapper">
+        <div class="sidebar-heading">DANH MỤC </div>
+        <div class="list-group list-group-flush">
+          <a href="/" class="list-group-item list-group-item-action"><i class="fa fa-home"></i> Trang chủ</a>
+          <span href="#" class="list-group-item"><i class="fa fa-th-list"></i> Phân loại thông báo <i class="fa fa-caret-down"></i></span>
+          <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
+          <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-image"></i> Chủ đề</a>
+          <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
+          <span href="#" class="list-group-item"><i class="fa fa-users"></i> Cổng thông tin <i class="fa fa-caret-down"></i></span>
+          <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user"></i> Sinh viên</a>
+          <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user-graduate"></i> Học viên (Sau đại học)</a>
+          <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user-tie"></i> Sinh viên (Ban cao đẳng/TCCN)</a>
+        </div>
+    </div>
+</nav>
+<nav class="nk-sidebarright">           
+    <div id="sidebar-wrapper">
+        <div class="sidebar-heading">THÔNG BÁO MỚI</div>
+        <div class="list-group notice">
+            <a href="#" class="list-group-item list-group-item-action list-group-odd">
+                <span class="notice-time">[Khoa công nghệ thông tin] - 8/1/2021</span><br>
+                <span class="notice-title">THÔNG BÁO NGHỈ HỌC TRÁNH COVID-19</span><br>
+                <span class="notice-content">Ngày 01/02/2021 chúng ta sẽ được nghĩ học!</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action list-group-even">
+                <span class="notice-time">[Khoa công nghệ thông tin] - 8/1/2021</span><br>
+                <span class="notice-title">THÔNG BÁO NGHỈ HỌC TRÁNH COVID-19</span><br>
+                <span class="notice-content">Ngày 01/02/2021 chúng ta sẽ được nghĩ học!</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action list-group-odd">
+                <span class="notice-time">[Khoa công nghệ thông tin] - 8/1/2021</span><br>
+                <span class="notice-title">THÔNG BÁO NGHỈ HỌC TRÁNH COVID-19</span><br>
+                <span class="notice-content">Ngày 01/02/2021 chúng ta sẽ được nghĩ học!</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action list-group-even">
+                <span class="notice-time">[Khoa công nghệ thông tin] - 8/1/2021</span><br>
+                <span class="notice-title">THÔNG BÁO NGHỈ HỌC TRÁNH COVID-19</span><br>
+                <span class="notice-content">Ngày 01/02/2021 chúng ta sẽ được nghĩ học!</span>
+            </a>
+        </div>
+        <a href="/notification" class="read-more"><u>Xem tất cả</u></a>
+    </div>
+</nav>

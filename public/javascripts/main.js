@@ -2,6 +2,7 @@
 
 $(document).ready(function(){
     var limit = 10;
+    var limit_cm = 5;
     var start = 0;
     var time = new Date();
     var action = 'inactive';
@@ -28,33 +29,36 @@ $(document).ready(function(){
                                     </div><hr>
                                     <div class="card__bottom-up">
                                         <a href="#comment" class="${data._id}"><i class="fa fa-comments"></i> Bình luận</a>&emsp;
-                                        <a href=""><i class="fa fa-share"></i> Chia sẻ</a>
+                                        
                                     </div>
                                     <div id="${data._id}">
                                     </div>
                                 </div>
                             </div>`;
+                            // <a href=""><i class="fa fa-share"></i> Chia sẻ</a>
                     //==Comments=========================================================
                     $(document).one('click', '.' + data._id, function(){
                         var inputComment = `<hr><div class="comment">
-                                                <a href="/personal">
+                                                <a href="/personal/${pt.user._id}">
                                                     <img  class="mr-2" src="${pt.user.pic}" width="35" height="35">
                                                 </a>
-                                                    <input type="text" class="form-control thinking" id="usr" placeholder="Viết bình luận...">
-                                                    &ensp;<input type="submit" class="btn btn-primary btn-send" value="Gửi">
+                                                <form>
+                                                    <input type="text" class="form-control phuong thinking" id="usr" placeholder="Viết bình luận...">
+                                                    &ensp;<input type="submit" class="phuong2 btn btn-primary btn-send" value="Gửi">
+                                                </form>
                                             </div>
                                             <div id="cm${data._id}"></div>
                                             <a href="#readmore" id="readmore${data._id}"></a>
                                             `
                         $( '#' + data._id).append(inputComment);
-                        load_comment(limit, start, data._id)
+                        load_comment(limit_cm, start, data._id)
                         
                     });
                     var begin = 0
                     $(document).on('click', '#readmore' + data._id, function(){
                         action_cm = 'active';
-                        begin = begin + limit
-                        load_comment(limit, begin, data._id)
+                        begin = begin + limit_cm
+                        load_comment(limit_cm, begin, data._id)
                     });
                 })
                 $('#load_data').append(html);
@@ -80,7 +84,7 @@ $(document).ready(function(){
                 var html = ``;
                 cm.comment.forEach(function(data){
                     html += `<div class="comment-content">
-                            <a href="/personal">
+                            <a href="/personal/${data.iduser._id}">
                                 <img  class="mr-2" src="${data.iduser.pic}" width="35" height="35">
                             </a>
                             <div class="comment-content-text"> 
@@ -136,7 +140,7 @@ $(document).ready(function(){
                 var html = ``;
                 html += `<div class="card">
                             <div class="card__body">
-                                <a href="/personal">
+                                <a href="/personal/${data.user._id}">
                                     <img  class="mr-2" src="${data.user.pic}" width="40" height="40">
                                     <span class="card__username">${data.user.name}</span>
                                 </a> °
@@ -147,7 +151,6 @@ $(document).ready(function(){
                                 </div><hr>
                                 <div class="card__bottom-up">
                                     <a href="#comment" class="${data.content._id}"><i class="fa fa-comments"></i> Bình luận</a>&emsp;
-                                    <a href=""><i class="fa fa-share"></i> Chia sẻ</a>
                                 </div>
                                 <div id="${data.content._id}">
                                 </div>
@@ -156,7 +159,7 @@ $(document).ready(function(){
                 $('#new-post').append(html);   
                 $(document).one('click', '.' + data.content._id, function(){
                     var inputComment = `<hr><div class="comment">
-                                            <a href="/personal">
+                                            <a href="/personal/${data.user._id}">
                                                 <img  class="mr-2" src="${data.user.pic}" width="35" height="35">
                                             </a>
                                             <input type="text" class="form-control thinking" id="usr" placeholder="Viết bình luận...">

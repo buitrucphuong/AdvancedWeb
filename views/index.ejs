@@ -31,7 +31,7 @@
                     </div> -->
                     <div class="card">
                         <div class="card__body card__body--up">
-                            <a href="/personal">
+                            <a href="/personal/<%= user._id %>">
                                 <img  class="mr-2" src="<%= user.pic %>" width="40" height="40">
                             </a>
                             <input type="text" class="form-control thinking" placeholder="Bạn đang nghĩ gì?" data-toggle="modal" data-target="#exampleModal" readonly>
@@ -44,7 +44,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">
-                                <a href="/personal">
+                                <a href="/personal/<%= user._id %>">
                                     <img  class="mr-2" src="<%= user.pic %>" width="40" height="40">
                                     <span class="card__username"><%= user.name %></span>
                                 </a>

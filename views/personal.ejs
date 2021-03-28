@@ -31,12 +31,12 @@
                     </div> -->
                     <div class="card card--background">
                         <div class="card__body card__body--avt">
-                            <img class="mr-2" src="<%= user.pic %>" width="150" height="150">
+                            <img class="mr-2" src="<%= users.pic %>" width="150" height="150">
                         </div>
                     </div>
                     <div class="card sticky-top">
                         <div class="card__body card__body--name">
-                            <h4>Phương</h4>
+                            <h4><%= users.name %> </h4>
                         </div> 
                     </div>
                     <div class="card">
@@ -52,109 +52,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card__body">
-                            <img  class="mr-2" src="images/form-user.png" width="40" height="40">
-                            <span class="card__username">Phương</span> °
-                            <span class="card__time-up">1 giờ</span><br>
-                            <div>
-                                <p class="card__content-up">Điều anh luôn giữ kín trong tim...</p>
-                                <img class="card__image-up" src="images/anh.jpg" width="100%" >
-                                <p class="card__comments">100 Bình luận</p>
-                            </div><hr>
-                            <div class="card__bottom-up">
-                                <a href=""><i class="fa fa-comments"></i> Bình luận</a>&emsp;
-                                <a href=""><i class="fa fa-share"></i> Chia sẻ</a>
-                            </div><hr>
-                            <div>
-                                <div class="comment">
-                                    <img class="mr-2" src="images/form-user.png" width="35" height="35">
-                                    <input type="text" class="form-control thinking" id="usr" placeholder="Viết bình luận...">
-                                </div>
-                                <div class="comment-content">
-                                    <img  class="mr-2" src="images/form-user.png" width="35" height="35">
-                                    <div class="comment-content-text" > 
-                                        <span class="card__username">Phương</span> °
-                                        <span class="card__time-up">1 giờ</span>
-                                        <span class="d-inline-block" data-toggle="popover"  data-content="<a href=''>Xóa bình luận này</a>">
-                                            <button class="btn" type="button"  disabled><i class="fas fa-ellipsis-h"></i></button>
-                                        </span>
-                                        <p>Ghê ghê</p>
-                                    </div>
-                                </div>
-                                <div class="comment-content">
-                                    <img  class="mr-2" src="images/form-user.png" width="35" height="35">
-                                    <div class="comment-content-text"> 
-                                        <span class="card__username">Phương</span> °
-                                        <span class="card__time-up">1 giờ</span>
-                                        <span class="d-inline-block" data-toggle="popover" data-content="<a href=''>Xóa bình luận này</a>">
-                                            <button class="btn" type="button" disabled><i class="fas fa-ellipsis-h"></i></button>
-                                        </span>
-                                        <p>Chúng ta không thuộc về nhau! Chúng ta không thuộc về nhau! Chúng ta không thuộc về nhau!</p>
-                                    </div>
-                                </div>
-                                <a href="" class="read-more">Xem thêm bình luận</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card__body">
-                            <img  class="mr-2" src="images/form-user.png" width="40" height="40">
-                            <span class="card__username">Phương</span> °
-                            <span class="card__time-up">1 giờ</span><br>
-                            <div>
-                                <p class="card__content-up">Điều anh luôn giữ kín trong tim<br>
-                                    Thương em đôi mắt ướt nhoà<br>
-                                    Điều anh luôn giữ kín trong tim<br>
-                                    Thương em đâu đó khóc oà<br>
-                                    Điều anh luôn giữ kín trong tim này<br>
-                                    Ngày mai nắng gió sương hao gầy<br>
-                                    Có ai thương lắng lo cho em<br>
-                                    Điều anh luôn giữ kín trong tim<br>
-                                    Thương em anh mãi xin là<br>
-                                    Điều anh luôn giữ kín trong tim<br>
-                                    Thương em vì thương thôi mà<br>
-                                    Điều anh luôn giữ kín trong tim<br>
-                                    Dù cho nắng tắt xuân thay…</p>
-                                <!-- <img class="image-up" src="images/anh.jpg" width="100%" > -->
-                                <p class="card__comments">100 Bình luận</p>
-                            </div><hr>
-                            <div class="card__bottom-up">
-                                <a href=""><i class="fa fa-comments"></i> Bình luận</a>&emsp;
-                                <a href=""><i class="fa fa-share"></i> Chia sẻ</a>
-                            </div><hr>
-                            <div>
-                                <div class="comment">
-                                    <img class="mr-2" src="images/form-user.png" width="35" height="35">
-                                    <input type="text" class="form-control thinking" id="usr" placeholder="Viết bình luận...">
-                                </div>
-                                <div class="comment-content">
-                                    <img  class="mr-2" src="images/form-user.png" width="35" height="35">
-                                    <div class="comment-content-text"> 
-                                        <span class="card__username">Phương</span> °
-                                        <span class="card__time-up">1 giờ</span>
-                                        <span class="d-inline-block" data-toggle="popover" data-content="<a href=''>Xóa bình luận này</a>">
-                                            <button class="btn"  type="button" disabled><i class="fas fa-ellipsis-h"></i></button>
-                                        </span>
-                                        <p>Ghê ghê</p>
-                                    </div>
-                                </div>
-                                <div class="comment-content">
-                                    <img  class="mr-2" src="images/form-user.png" width="35" height="35">
-                                    <div class="comment-content-text"> 
-                                        <span class="card__username">Phương</span> °
-                                        <span class="card__time-up">1 giờ</span>
-                                        <span class="d-inline-block" data-toggle="popover" data-content="<a href=''>Xóa bình luận này</a>">
-                                            <button class="btn" type="button" disabled><i class="fas fa-ellipsis-h"></i></button>
-                                        </span>
-                                        <p>Chúng ta không thuộc về nhau! Chúng ta không thuộc về nhau! Chúng ta không thuộc về nhau!</p>
-                                    </div>
-                                </div>
-                                <a href="" class="read-more">Xem thêm bình luận</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="spinner-border text-warning" ></div>
+                    
                 </div>
             </div>
             <!-- #/ container -->

@@ -61,8 +61,8 @@ router.get('/notification', isLoggedIn, function(req, res, next) {
 });
 
 router.get('/personal/:id', isLoggedIn, function(req, res, next) {
-  users.find({_id: req.params.id}).exec((err, user) => {
-    res.render('personal', { user});
+  users.findOne({_id: req.params.id}).exec((err, user) => {
+    res.render('personal', { user: req.user, users: user});
   });
 });
 

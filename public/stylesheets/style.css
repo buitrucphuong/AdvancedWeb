@@ -370,7 +370,7 @@ a:hover {
     text-align: right;
 }
 
-/* =====styles for Loginssss page========================================================== */
+/* =====styles for Login page========================================================== */
 
 .form-login {
     padding-top: 100px;
@@ -503,3 +503,12 @@ a:hover {
         width: 100%;
     }
 }
+
+/* .phuong {
+    position: absolute;
+    width: 72%;
+}
+.phuong2 {
+    position: absolute;
+    right: 0;
+} */

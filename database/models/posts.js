@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 
 var postsSchema = mongoose.Schema({
     content: String,
-    iduserinfo: { type: mongoose.Types.ObjectId, ref: 'userinfo' },
-    idcomments: { type: mongoose.Types.ObjectId, ref: 'comments' }
+    iduser: { type: mongoose.Types.ObjectId, ref: 'users' },
+    created: Date
 });
 
 module.exports = mongoose.model('posts', postsSchema, 'posts');

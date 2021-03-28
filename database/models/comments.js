@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 
 var commentsSchema = mongoose.Schema({
     content: String,
-    iduserinfo: { type: mongoose.Types.ObjectId, ref: 'userinfo' }
+    iduser: { type: mongoose.Types.ObjectId, ref: 'users' },
+    idpost: { type: mongoose.Types.ObjectId, ref: 'posts' }
 });
 
 module.exports = mongoose.model('comments', commentsSchema, 'comments');

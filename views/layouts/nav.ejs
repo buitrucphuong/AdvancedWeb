@@ -4,9 +4,9 @@
     </label>
     <li class="nav-item nav-item-search">
         <a href="/"><img  class="mr-2" src="images/logo.jpg" width="28" height="28"></a> 
-        <input type="text" class="form-control search" id="usr" placeholder="Tìm kiếm...">   
+        <input type="search" class="form-control search" id="usr" placeholder="Tìm kiếm...">   
         <a class="nav-link nav-item-md"  href="/personal">
-            <img  class="mr-2" src="images/form-user.png" width="28" height="28"><b>Phương</b>
+            <img  class="mr-2" src="<%= user.pic %>" width="28" height="28"><b><%= user.name %></b>
         </a>
     </li>
     
@@ -16,11 +16,11 @@
         <ul class="navbar-nav  mt-lg-0">
             <li class="nav-item nav-item-mduser">
                 <a class="nav-link"  href="/personal">
-                    <img  class="mr-2" src="images/form-user.png" width="28" height="28"><b>Phương</b>
+                    <img  class="mr-2" src="<%= user.pic %>" width="28" height="28"><b><%= user.name %></b>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link sign-out" href="#"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                <a class="nav-link sign-out" href="/logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
             </li>
         </ul>
     </div>
@@ -59,11 +59,11 @@
         </li>
         <li>
             <a class="nav__tablet-link"  href="/personal">
-                <img  class="mr-2" src="images/form-user.png" width="28" height="28"><b>Phương</b>
+                <img  class="mr-2" src="<%= user.pic %>" width="28" height="28"><b><%= user.name %></b>
             </a>
         </li>
         <li>
-            <a class="nav__tablet-link sign-out" href="#"><i class="fa fa-sign-out-alt"></i> Đăng xuất</a>
+            <a class="nav__tablet-link sign-out" href="/logout"><i class="fa fa-sign-out-alt"></i> Đăng xuất</a>
         </li>
     </ul>
 </nav>

@@ -30,6 +30,25 @@ router.post("/post", function(req, res){
 	})
 });
 
+router.post("/post-comment", function(req, res){
+	var newComments = new comments({
+		content: req.body.content,
+    iduser: req.user.id,
+    idpost: req.body.idpost,
+    created: Date.now()
+	});
+	newComments.save(function(err){
+		if(err){
+			res.json({kq:false,errMsg:err});
+		}else{ 		
+			res.json({
+        content: newComments,
+        user: req.user
+      })
+		}
+	})
+});
+
 router.get("/load_data", function (req, res) {
   let time = req.query.time
   let a = parseInt(req.query.limit);
@@ -43,11 +62,13 @@ router.get("/load_data", function (req, res) {
 });
 
 router.get("/load_comment", function (req, res) {
+  let time = req.query.time
   let a = parseInt(req.query.limit);
   let b = parseInt(req.query.start);
-  comments.find({idpost: req.query.id})
+  comments.find({idpost: req.query.id, created: {$lt: time}})
   .limit(a).skip(b)
   .populate('iduser')
+  .sort({'_id' : -1})
   .exec((err, cm) => {
     res.send({
       comment: cm,
@@ -55,6 +76,16 @@ router.get("/load_comment", function (req, res) {
     });
   });
 });
+
+router.get("/delete_comment/:id", function(req, res) {
+  comments.findByIdAndDelete(req.params.id, function(err, data) {
+    if (err) {
+        res.json({ kq: false, errMsg: err });
+    } else {
+      res.send("ok");
+    }
+  })
+})
 
 router.get('/notification', isLoggedIn, function(req, res, next) {
   res.render('notification', { user: req.user});

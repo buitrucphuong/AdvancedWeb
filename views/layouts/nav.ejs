@@ -5,7 +5,7 @@
     <li class="nav-item nav-item-search">
         <a href="/"><img  class="mr-2" src="/images/logo.jpg" width="28" height="28"></a> 
         <input type="search" class="form-control search" id="usr" placeholder="Tìm kiếm...">   
-        <a class="nav-link nav-item-md"  href="/personal/<%= user._id %>">
+        <a class="nav-link nav-item-md"  href="/personal?id=<%= user._id %>">
             <img  class="mr-2" src="<%= user.pic %>" width="28" height="28"><b><%= user.name %></b>
         </a>
     </li>
@@ -15,7 +15,7 @@
         </ul>
         <ul class="navbar-nav  mt-lg-0">
             <li class="nav-item nav-item-mduser">
-                <a class="nav-link"  href="/personal/<%= user._id %>">
+                <a class="nav-link"  href="/personal?id=<%= user._id %>">
                     <img  class="mr-2" src="<%= user.pic %>" width="28" height="28"><b><%= user.name %></b>
                 </a>
             </li>
@@ -58,7 +58,7 @@
             <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-user-tie"></i> Sinh viên (Ban cao đẳng/TCCN)</a>
         </li>
         <li>
-            <a class="nav__tablet-link"  href="/personal/<%= user._id %>">
+            <a class="nav__tablet-link"  href="/personal?id=<%= user._id %>">
                 <img  class="mr-2" src="<%= user.pic %>" width="28" height="28"><b><%= user.name %></b>
             </a>
         </li>

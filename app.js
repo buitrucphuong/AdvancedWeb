@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport')
 const session = require('express-session')
+var flash = require('connect-flash');
 
 const database = require('./Database/database');
 const indexRouter = require('./routes/index');
@@ -22,60 +23,20 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' }));
 app.use(passport.initialize());
 app.use(passport.session()); 
 
-passport.use(new GoogleStrategy({
-    clientID        : config.gooogle[env].appId,
-    clientSecret    : config.gooogle[env].appSecret,
-    callbackURL     : config.gooogle[env].callbackURL,
-    profileFields: ['id', 'displayName', 'name', 'picture.type(large)']
-},
-function(accessToken, refreshToken, profile, done) {
-    process.nextTick(function() {
-        User.findOne({ 'uid' : profile.id }, function(err, user) {
-            if (err)
-                return done(err);
-            if (user) {
-                return done(null, user); 
-            } else {
-                var newUser = new User();
-                newUser.uid = profile.id;                                
-                newUser.name  = profile.name.givenName + ' ' + profile.name.familyName; 
-                newUser.pic = profile.photos[0].value;
-                newUser.role = 'student';
-                newUser.created = Date.now();
-                newUser.save(function(err) {
-                    if (err)
-                        throw err;
-                    return done(null, newUser);
-                });
-            }
-
-        });
-
-    })
-
-}));
-
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-        done(err, user);
-    });
-});
-
-app.get('/auth/google', passport.authenticate('google', { scope : 'profile' }));
+require('./passport')(passport);
+app.get('/auth/google', passport.authenticate('google', { scope : [ 'email', 'profile' ] }));
 
 app.get('/google/callback',
 passport.authenticate('google', {
     successRedirect : '/',
-    failureRedirect : '/login'
+    failureRedirect : '/login',
+    failureFlash : true
 }));
 
 app.use('/', indexRouter);

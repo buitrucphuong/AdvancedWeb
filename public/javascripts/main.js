@@ -64,54 +64,55 @@ $(document).ready(function(){
     //function load post
     function load_post(pt) {
         var html = '';
-                pt.posts.forEach(function(data){
-                    html += `<div class="card" id="post-content${data._id}">
-                                <div class="card__body">
-                                    <a href="/personal?id=${data.iduser._id}">
-                                        <img  class="mr-2" src="${data.iduser.pic}" width="40" height="40">
-                                        <span class="card__username">${data.iduser.name}</span>
-                                    </a> °
-                                    <span class="card__time-up">${new Date(data.created).toLocaleString('en-JM')}</span>
-                                    ${checkuser(data.iduser._id, pt.user._id, data._id)}
-                                    <br>
-                                    <div>
-                                        <p class="card__content-up">${data.content}</p>
-                                        ${check_image(data)}
-                                        ${check_video(data)}
-                                        <p class="card__comments">0 Bình luận</p>
-                                    </div><hr>
-                                    <div class="card__bottom-up">
-                                        <a href="#comment" class="${data._id}"><i class="fa fa-comments"></i> Bình luận</a>&emsp;
-                                        
-                                    </div>
-                                    <div id="${data._id}">
-                                    </div>
-                                </div>
-                            </div>`;
-                            // <a href=""><i class="fa fa-share"></i> Chia sẻ</a>
-                
-                    //Input comment ===================================
-                    input_comment(data, pt.user)
-                    //Readmore comments======================================================
-                    var begin = 0
-                    $(document).on('click', '#readmore' + data._id, function(){
-                        action_cm = 'active';
-                        begin = begin + limit_cm
-                        load_comment(limit_cm, begin, data._id, time)
-                    });
-                    //Delete post==========================================
-                    delete_post(data._id)  
-                    
-                })
-                $('#load_data').append(html);
-                $('[data-toggle="popover"]').popover({html:true}); 
-                if(pt.posts =='') {
-                    $('#load_data_message').html("");
-                    action = 'active';
-                }else {
-                    $('#load_data_message').html("<div class='spinner-border text-warning' ></div>");
-                    action = 'inactive';
-                }
+        var i = 0
+        pt.posts.forEach(function(data){
+            html += `<div class="card" id="post-content${data._id}">
+                        <div class="card__body">
+                            <a href="/personal?id=${data.iduser._id}">
+                                <img  class="mr-2" src="${data.iduser.pic}" width="40" height="40">
+                                <span class="card__username">${data.iduser.name}</span>
+                            </a> °
+                            <span class="card__time-up">${new Date(data.created).toLocaleString('en-JM')}</span>
+                            ${checkuser(data.iduser._id, pt.user._id, data._id)}
+                            <br>
+                            <div>
+                                <p class="card__content-up">${data.content}</p>
+                                ${check_image(data)}
+                                ${check_video(data)}
+                                <p class="card__comments">${pt.countComment[i]} Bình luận</p>
+                            </div><hr>
+                            <div class="card__bottom-up">
+                                <a href="#comment" class="${data._id}"><i class="fa fa-comments"></i> Bình luận</a>&emsp;
+                                
+                            </div>
+                            <div id="${data._id}">
+                            </div>
+                        </div>
+                    </div>`;
+                    // <a href=""><i class="fa fa-share"></i> Chia sẻ</a>
+        
+            //Input comment ===================================
+            input_comment(data, pt.user)
+            //Readmore comments======================================================
+            var begin = 0
+            $(document).on('click', '#readmore' + data._id, function(){
+                action_cm = 'active';
+                begin = begin + limit_cm
+                load_comment(limit_cm, begin, data._id, time)
+            });
+            //Delete post==========================================
+            delete_post(data._id)  
+            i++;
+        })
+        $('#load_data').append(html);
+        $('[data-toggle="popover"]').popover({html:true}); 
+        if(pt.posts =='') {
+            $('#load_data_message').html("");
+            action = 'active';
+        }else {
+            $('#load_data_message').html("<div class='spinner-border text-warning' ></div>");
+            action = 'inactive';
+        }
     }
 
     //new post======================================================================
@@ -353,5 +354,12 @@ $(document).ready(function(){
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
 });
+
+//Hiển thị thông báo lỗi trang đăng nhập
+window.setTimeout(function() {
+    $(".alert-login").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove(); 
+    });
+}, 6000);
 
 

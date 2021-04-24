@@ -12,6 +12,11 @@
   <link href="stylesheets/style.css" rel="stylesheet">
 </head>
 <body>
+    <% if(message!=''){%>
+    <div class="fixed-top alert alert-danger alert-dismissible alert-login">
+        <%= message %>
+    </div>
+    <% } %>
     <div class="container form-login">
       <form>
           <div class="card card--login">
@@ -27,5 +32,6 @@
           </div>
        </form>
     </div>
+    <script src="javascripts/main.js"></script>
 </body>
 </html>

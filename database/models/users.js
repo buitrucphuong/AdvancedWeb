@@ -5,7 +5,8 @@ var usersSchema = mongoose.Schema({
     name: String,
     pic: String,
     role: String,
-    created: Date
+    created: Date,
+    email: String
 });
 
 var users = mongoose.model('users', usersSchema);

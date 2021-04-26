@@ -64,7 +64,7 @@ $(document).ready(function(){
     //function load post
     function load_post(pt) {
         var html = '';
-        var i = 0
+        var i = 0;
         pt.posts.forEach(function(data){
             html += `<div class="card" id="post-content${data._id}">
                         <div class="card__body">

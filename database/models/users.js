@@ -3,10 +3,13 @@ var mongoose = require('mongoose');
 var usersSchema = mongoose.Schema({
     uid: String,
     name: String,
-    pic: String,
+    pic: {type: String, default: '/images/user.png'},
     role: String,
     created: Date,
-    email: String
+    email: String,
+    username: String,
+    password: String,
+    idcategory: [{ type: mongoose.Types.ObjectId, ref: 'categories' }]
 });
 
 var users = mongoose.model('users', usersSchema);

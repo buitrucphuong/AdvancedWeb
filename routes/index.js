@@ -2,6 +2,10 @@ var express = require('express');
 var posts = require('./../database/models/posts');
 var comments = require('./../database/models/comments');
 var users = require('./../database/models/users');
+var categories = require('./../database/models/categories');
+var notifications = require('./../database/models/notifications')
+var bcrypt = require('bcryptjs');
+var saltRounds = 10;
 var multer = require('multer');
 var router = express.Router();
 
@@ -186,18 +190,116 @@ router.post("/delete_post", (req, res) => {
 	})
 })
 
-router.get('/notification', isLoggedIn, (req, res, next) => {
+router.get('/notification', isLoggedIn, (req, res) => {
   	res.render('notification', { user: req.user});
 });
 
-router.get('/personal', isLoggedIn, (req, res, next) => {
+router.get('/personal', isLoggedIn, (req, res) => {
 	users.findOne({_id: req.query.id}).exec((err, user) => {
 		res.render('personal', { user: req.user, users: user});
 	});
 });
 
+router.get('/adduser', roleAdmin, (req, res) => {
+	categories.find().exec((err, category) => {
+		res.render('adduser', { 
+			user: req.user,
+			category: category,
+			message: req.flash('success')
+		});
+	});
+});
 
+router.post('/adduser', roleAdmin, (req, res) => {
+	users.findOne({username: req.body.username}, (err, acc) => {
+    	if(acc) {
+            console.log('Username đã được sử dụng!')
+            backURL = req.header('Referer') || '/';
+            res.redirect(backURL);
+        }else {
+			bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+				let newUser = new users({
+					name: req.body.name,
+					username: req.body.username,
+					password: hash,
+					idcategory: req.body.idcategory,
+					role: "manage",
+					created: Date.now()
+				});
+				newUser.save(function(err) {
+					if (err) {
+						res.json({ kq: false, errMsg: err });
+					} else {
+						req.flash('success', 'Thêm tài khoản thành công!')
+						backURL = req.header('Referer') || '/';
+						res.redirect(backURL);
+					}
+				})
+			})
+		}
+	})
+})
 
+router.get('/addnotice', roleManage, (req, res) => {
+	users.find({username: "buitrucphuong"}).populate('idcategory').exec((err, acc) => {
+		res.render('addnotice',{
+			user: req.user,
+			category: acc,
+			message: req.flash('success')
+		})
+	})
+})
+
+router.post('/addnotice', roleManage, (req, res) => {
+	let newNotice = new notifications({
+		title: req.body.title,
+		content: req.body.content,
+		iduser: req.user._id,
+		created: Date.now(),
+		idcategory: req.body.category
+	});
+	newNotice.save(function(err) {
+		if (err) {
+			res.json({ kq: false, errMsg: err });
+		} else {
+			req.flash('success', 'Thêm thông báo thành công!')
+			backURL = req.header('Referer') || '/';
+			res.redirect(backURL);
+		}
+	})
+})
+
+router.get('/changepass', roleSys, (req, res) => {
+	res.render('changepass', {
+		user: req.user,
+		message: req.flash('success'),
+		messageError: req.flash('error')
+	})
+})
+
+router.post('/changepass', roleSys, (req, res) => {
+	users.findOne({_id: req.user._id}, (err, acc) => {
+		bcrypt.compare(req.body.currentpass, acc.password, (err,isMatch)=> {
+			if(isMatch) {
+				bcrypt.hash(req.body.newpass, saltRounds, function(err, hash) {
+					users.findByIdAndUpdate({ _id: req.user._id }, 
+					{$set: {password: hash}},
+					function(err, data) {
+						if (err) {
+							res.json({ kq: false, errMsg: err });
+						} else {
+							req.flash('success', 'Đổi mật khẩu thành công!')
+							res.redirect('/changepass');
+						}
+					});
+				})
+			} else {
+				req.flash('error', 'Mật khẩu hiện tại không chính xác!')
+				res.redirect('/changepass');
+			}
+		});
+	})
+})
 //login page
 
 router.get('/login', (req, res) => {
@@ -211,5 +313,24 @@ function isLoggedIn(req, res, next) {
 		return next();
 	res.redirect('/login');
 }
+
+function roleAdmin(req, res, next) {
+	if (req.isAuthenticated() && req.user.role == 'admin')
+		return next();
+	res.redirect('/');
+}
+
+function roleManage(req, res, next) {
+	if (req.isAuthenticated() && req.user.role == 'manage')
+		return next();
+	res.redirect('/');
+}
+
+function roleSys(req, res, next) {
+	if (req.isAuthenticated() && (req.user.role == 'manage' || req.user.role == 'admin'))
+		return next();
+	res.redirect('/');
+}
+
 
 module.exports = router;

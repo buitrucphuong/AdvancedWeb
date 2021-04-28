@@ -40,6 +40,21 @@
         <li>
             <a href="/" class="nav__tablet-link"><i class="fa fa-home"></i> Trang chủ</a>
         </li>
+        <% if(locals.user.role == "admin"){ %>
+            <li>
+                <a href="/adduser" class="nav__tablet-link"><i class="fa fa-user-plus"></i>Thêm tài khoản</a>
+            </li>
+        <%}%>
+        <% if(locals.user.role == "manage"){ %>
+            <li>
+                <a href="/addnotice" class="nav__tablet-link"><i class="fa fa-plus"></i> Đăng thông báo mới</a>
+            </li>
+        <% } %>
+        <% if(locals.user.role == "admin" || locals.user.role == "manage"){ %>
+            <li>
+                <a href="/changepass" class="nav__tablet-link"><i class="fa fa-key"></i> Đổi mật khẩu</a>
+            </li>
+        <%}%>
         <li>
             <a href="/notification" class="nav__tablet-link"><i class="fa fa-bell"></i> Thông báo mới</a>
         </li>
@@ -71,15 +86,24 @@
     <div id="sidebar-wrapper">
         <div class="sidebar-heading">DANH MỤC </div>
         <div class="list-group list-group-flush">
-          <a href="/" class="list-group-item list-group-item-action"><i class="fa fa-home"></i> Trang chủ</a>
-          <span href="#" class="list-group-item"><i class="fa fa-th-list"></i> Phân loại thông báo <i class="fa fa-caret-down"></i></span>
-          <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
-          <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-image"></i> Chủ đề</a>
-          <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
-          <span href="#" class="list-group-item"><i class="fa fa-users"></i> Cổng thông tin <i class="fa fa-caret-down"></i></span>
-          <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user"></i> Sinh viên</a>
-          <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user-graduate"></i> Học viên (Sau đại học)</a>
-          <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user-tie"></i> Sinh viên (Ban cao đẳng/TCCN)</a>
+            <a href="/" class="list-group-item list-group-item-action"><i class="fa fa-home"></i> Trang chủ</a>
+            <% if(locals.user.role == "admin"){ %>
+                <a href="/adduser" class="list-group-item list-group-item-action"><i class="fa fa-user-plus"></i> Thêm tài khoản</a>
+            <% } %>
+            <% if(locals.user.role == "manage"){ %>
+                <a href="/addnotice" class="list-group-item list-group-item-action"><i class="fa fa-plus"></i> Đăng thông báo mới</a>
+            <% } %>
+            <% if(locals.user.role == "admin" || locals.user.role == "manage"){ %>
+                <a href="/changepass" class="list-group-item list-group-item-action"><i class="fa fa-key"></i> Đổi mật khẩu</a>
+            <%}%>
+            <span href="#" class="list-group-item"><i class="fa fa-th-list"></i> Phân loại thông báo <i class="fa fa-caret-down"></i></span>
+            <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
+            <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-image"></i> Chủ đề</a>
+            <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
+            <span href="#" class="list-group-item"><i class="fa fa-users"></i> Cổng thông tin <i class="fa fa-caret-down"></i></span>
+            <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user"></i> Sinh viên</a>
+            <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user-graduate"></i> Học viên (Sau đại học)</a>
+            <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user-tie"></i> Sinh viên (Ban cao đẳng/TCCN)</a>
         </div>
     </div>
 </nav>

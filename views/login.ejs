@@ -19,12 +19,14 @@
     </div>
     <% } %>
     <div class="container form-login">
-      <form>
+      <form action="/login" method="post" id="loginForm">
           <div class="card card--login">
               <div class="card__body">
                  <h3>Đăng nhập</h3>
-                  <input type="text" class="form-control thinking" id="usr" placeholder="Username">
-                  <input type="text" class="form-control thinking" id="usr" placeholder="Password">
+                  <input type="text" class="form-control thinking" id="username" name="username" placeholder="Username">
+                  <span id="errorUsername" class="error-input"></span>
+                  <input type="password" class="form-control thinking" id="password" name="password" placeholder="Password">
+                  <span id="errorPassword" class="error-input"></span>
                   <input type="submit" class="btn btn-primary" value="Đăng nhập">
                   <a href="/auth/google" class="google btn btn-google"><i class="fa fa-google fa-fw">
                     </i> Đăng nhập với mail sinh viên

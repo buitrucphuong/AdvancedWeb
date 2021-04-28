@@ -1,12 +1,35 @@
-var express = require('express')
-var User = require('./database/models/users')
-var credentials = require('./credentials')
-var GoogleStrategy = require('passport-google-oauth20').Strategy
-var config = credentials.authProviders
+const express = require('express')
+const User = require('./database/models/users')
+const credentials = require('./credentials')
+const GoogleStrategy = require('passport-google-oauth20').Strategy
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcryptjs');
+const config = credentials.authProviders
 
-var app = express();
-var env = app.get('env')
+const app = express();
+const env = app.get('env')
 module.exports = function(passport) {
+    passport.use('login-account', new LocalStrategy(function(username, password, done) {
+        let notify = 'Thông tin đăng nhập không chính xác!'
+        User.findOne({username: username},(err, username)=> {
+            if(err) done(null,false, {message: notify});
+            if(!username) {
+                return done(null,false,{message: notify});
+            }
+            if(!username.password) {
+                return done(null,false,{message: notify});
+            }
+            bcrypt.compare(password, username.password,(err,isMatch)=> {
+                if(err) return done(err);
+                if(isMatch) {
+                    return done(null, username);
+                } else {
+                    return done(null, false, {message: notify});
+                }
+            });
+        });
+    }));
+
     passport.use(new GoogleStrategy({
         clientID        : config.gooogle[env].appId,
         clientSecret    : config.gooogle[env].appSecret,

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/logo.jpg">
+    <title>Social</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <link href="stylesheets/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="main-wrapper">
+        <%- include('./layouts/nav.ejs') %>
+        <% if(locals.message!=''){%>
+            <div class="fixed-top alert alert-success alert-dismissible alert-login">
+                <%= message %>
+            </div>
+        <% } %>
+        <% if(locals.messageError!=''){%>
+            <div class="fixed-top alert alert-danger alert-dismissible alert-login">
+                <%= messageError %>
+            </div>
+        <% } %>
+        <div class="content-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card__body add-user">
+                            <form action="/changepass" method="post" id="changpassForm">
+                                <h4 class="add-user__tittle">ĐỔI MẬT KHẨU</h4> 
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label" for="currentpass">Mật khẩu hiện tại</label>
+                                    <div class="col-9">
+                                        <input type="password" class="form-control" id="currentpass" name="currentpass" placeholder="Nhập mật khẩu hiện tại..">
+                                        <span id="errorCurrentpass" class="error-input"></span>
+                                    </div>
+                                </div> 
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label" for="newpass">Mật khẩu mới</label>
+                                    <div class="col-9">
+                                        <input type="password" class="form-control" id="newpass" name="newpass" placeholder="Nhập mật khẩu mới..">
+                                        <span id="errornNewpass" class="error-input"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label" for="repass">Xác nhận mật khẩu</label>
+                                    <div class="col-9">
+                                        <input type="password" class="form-control" id="repass" placeholder="Nhập lại mật khẩu mới..">
+                                        <span id="errorRepass" class="error-input"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-9 ml-auto">
+                                        <button type="submit" class="btn btn-primary">Đổi</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="javascripts/main.js"></script>
+</body>
+
+</html>

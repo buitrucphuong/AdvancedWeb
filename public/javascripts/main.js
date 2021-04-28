@@ -188,8 +188,8 @@ $(document).ready(function(){
                                     </a>
                                     <form id="form-comment${data._id}">
                                         <div class="row">
-                                            <div class="col-9">
-                                                <input type="text" class="form-control thinking" id="commenContent${data._id}" name="content" placeholder="Viết bình luận..." required>
+                                            <div class="col-8 ">
+                                                <input type="text" class="form-control thinking comment__input" id="commenContent${data._id}" name="content" placeholder="Viết bình luận..." required>
                                             </div>
                                             <div class="col-3">
                                                 <button type="submit" class="btn btn-primary">Gửi</button>
@@ -353,13 +353,166 @@ $(document).ready(function(){
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
+
+    //Check validate login form=========================================
+    $("#loginForm").submit(function(){
+        var status = false;
+        if ($("#username").val().trim() == "") {
+            $("#errorUsername").html("Vui lòng nhập username!");
+            status = false;
+        } else {
+            $("#errorUsername").html("");
+            status = true;
+        }
+
+        if ($("#password").val().trim() == "") {
+            $("#errorPassword").html("Vui lòng nhập password!");
+            status = false;
+        } else {
+            $("#errorPassword").html("");   
+        }
+        return status;
+    });
+    //Check validate add user form=========================================
+    $("#adduserForm").submit(function(){
+        var checkbox = $(".idcategory:checked").length;
+        var displayName = $("#displayName").val();
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var repassword = $("#repassword").val();
+        var status = false;
+        if (displayName.trim() == "") {
+            $("#errorDisplayName").html("Vui lòng nhập tên hiển thị!");
+            status = false;
+        } else {
+            $("#errorDisplayName").html("");
+            status = true;
+        }
+
+        if (username.trim() == "") {
+            $("#errorUsername").html("Vui lòng nhập tên đăng nhập!");
+            status = false;
+        }else if(username.length < 6) {
+            $("#errorUsername").html("Tên đăng nhập ít nhất 6 ký tự!");
+            status = false;
+        }else {
+            $("#errorUsername").html("");
+        }
+
+        if (password.trim() == "") {
+            $("#errorPassword").html("Vui lòng nhập mật khẩu!");
+            status = false;
+        }else if(password.length < 6) {
+            $("#errorPassword").html("Tên đăng nhập ít nhất 6 ký tự!");
+            status = false;
+        } else {
+            $("#errorPassword").html("");   
+        }
+
+        if (repassword.trim() == "") {
+            $("#errorRepassword").html("Vui lòng xác nhận lại mật khẩu!");
+            status = false;
+        }else if(password != repassword) {
+            $("#errorRepassword").html("Mật khẩu không khớp!");
+            status = false;
+        } else {
+            $("#errorRepassword").html("");   
+        }
+
+        if (checkbox < 1) {
+            $("#errorCheckbox").html("Vui lòng chọn ít nhất 1 chuyên mục!");
+            status = false;
+        } else {
+            $("#errorCheckbox").html("");
+        }
+
+        return status;
+    });
+    //Check validate add notice form=========================================
+    $("#addnoticeForm").submit(function(){
+        var title = $("#title").val();
+        var category = $("#category").val();
+        var content = $("#content").val();
+        console.log(content)
+        var status = false;
+        if (title.trim() == "") {
+            $("#errorTitle").html("Vui lòng nhập tiêu đề!");
+            status = false;
+        } else {
+            $("#errorTitle").html("");
+            status = true;
+        }
+
+        if (category.trim() == "") {
+            $("#errorCategory").html("Vui lòng chọn chuyên mục!");
+            status = false;
+        } else {
+            $("#errorCategory").html("");
+        }
+
+        if (content.trim() == "") {
+            $("#errorContent").html("Vui lòng nhập nội dung!");
+            status = false;
+        } else {
+            $("#errorContent").html("");
+        }
+
+        return status;
+    });
+    //Check validate change password form=========================================
+    $("#changpassForm").submit(function(){
+        var currentpass = $("#currentpass").val();
+        var newpass = $("#newpass").val();
+        var repass = $("#repass").val();
+        var status = false;
+        if (currentpass.trim() == "") {
+            $("#errorCurrentpass").html("Vui lòng nhập mật khẩu hiện tại!");
+            status = false;
+        }else if(currentpass.length < 6) {
+            $("#errorCurrentpass").html("Mật khẩu ít nhất 6 ký tự!");
+            status = false;
+        } else {
+            $("#errorCurrentpass").html("");
+            status = true;
+        }
+
+        if (newpass.trim() == "") {
+            $("#errornNewpass").html("Vui lòng nhập mật khẩu mới!");
+            status = false;
+        }else if(newpass.length < 6) {
+            $("#errornNewpass").html("Mật khẩu ít nhất 6 ký tự!");
+            status = false;
+        } else {
+            $("#errornNewpass").html("");
+        }
+
+        if (repass.trim() == "") {
+            $("#errorRepass").html("Vui lòng xác nhận lại mật khẩu!");
+            status = false;
+        }else if(newpass != repass) {
+            $("#errorRepass").html("Mật khẩu không khớp!");
+            status = false;
+        } else {
+            $("#errorRepass").html("");
+        }
+
+        return status;
+    });
+    //Dislay error for Lognin page=================================
+    window.setTimeout(function() {
+        $(".alert-login").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove(); 
+        });
+    }, 6000);
+
+    //Ckeditor for textarea content==================================
+    ClassicEditor
+    .create( document.querySelector('.add-user #content') )
+    .catch( error => {
+        console.error( error );
+    });
 });
 
-//Hiển thị thông báo lỗi trang đăng nhập
-window.setTimeout(function() {
-    $(".alert-login").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove(); 
-    });
-}, 6000);
+
 
 

@@ -12,9 +12,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700">
-    <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js" integrity="sha512-2RDFHqfLZW8IhPRvQYmK9bTLfj/hddxGXQAred2wNZGkrKQkLGj8RCkXfRJPHlDerdHHIzTFaahq4s/P4V6Qig==" crossorigin="anonymous"></script>
     <link href="/stylesheets/style.css" rel="stylesheet">
     <link href="/stylesheets/notice.css" rel="stylesheet">
 
@@ -132,14 +129,14 @@
                 </div>
             </div>
         </nav>
+        
         <div class="content-body content-body--notice"> 
             <div class="row">
-                <div id="socketio"></div>
                 <div class="col-12">
                     <div class="card">
                         <div class="card__body add-user card__body--notice">
                             <h3><center><%=notice.title  %> </center></h3>
-                            <p class="notice__datetime"><u><%=notice.idcategory.name  %> | <%=notice.created.toLocaleString('en-JM')  %></u></p>
+                            <p class="notice__datetime"><u><%=notice.idcategory.name  %> | <%=notice.created.toLocaleString('en-JM')  %></u></p>    
                             <div>
                                 <%-notice.content  %>
                             </div>
@@ -150,7 +147,7 @@
             </div>
         </div>
     </div>
-    <script src="/javascripts/main.js"></script>
+    <script src="javascripts/main.js"></script>
     
 </body>
 

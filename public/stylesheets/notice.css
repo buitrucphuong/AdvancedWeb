@@ -1,4 +1,4 @@
-.content-body-2{
+.nt__content-body-2{
     padding-top: 68px;
     margin-left: 25%;
     margin-right: 10px;
@@ -15,8 +15,8 @@ form{
     padding: 5px 5px 10px 10px;
 }
 
-.row a{
-    background-color:#F9F9F3;
+.nt__row a{
+    background-color:white;
     margin-left: 5px;
 }
 
@@ -46,10 +46,17 @@ label{
 
 .content{
     white-space: nowrap;
-    text-overflow: ellipsis;
     overflow: hidden;
-    display: inherit;
-    width:80%;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+h5.content{
+    color: #333365;
+}
+
+p.content{
+    font-style: italic;
 }
 
 .itemnotification{
@@ -130,6 +137,46 @@ medium{
     font-style: italic;
     text-align: right;
 }
+
+.faculityPannel{
+    margin-top: 100px;
+    margin-left: 30%;
+}
+
+.faculityPannel h4{
+    color:#333365;
+}
+
+.card_faculity{
+    width: 13rem;
+    height: 13rem;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    overflow: hidden;
+    text-align: center;
+    background-color: white;
+}
+
+.card_faculity h5{
+    font-style: italic;
+    background-color: white;
+}
+
+.card-img-top{
+    width:40%;
+    padding-top: 10px;
+}
+
+.pagination{
+    margin-top: 2rem;
+}
+
+.nt__card-body{
+    background-color: white;
+    padding: 5px;
+    margin-top: 15px;
+}
+
 @media only screen and (max-width: 1289px) {
     .content-body {
         padding-top: 36px;
@@ -144,7 +191,6 @@ medium{
         margin: auto;
         width: 80%;
     }
-
 }
 
 @media only screen and (max-width: 768px) {

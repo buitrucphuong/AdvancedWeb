@@ -7,6 +7,7 @@ var notifications = require('./../database/models/notifications')
 var bcrypt = require('bcryptjs');
 var saltRounds = 10;
 var multer = require('multer');
+const { json } = require('express');
 var router = express.Router();
 
 /* GET home page. */
@@ -339,14 +340,33 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 	let page = req.params.page || 1; 
   
 	let user = req.user
-	notifications.find().sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
+	let check = false
+	// for(i=0; i<notifications.length; i++){
+	// 	console(notifications.seen[i])
+	// 	if(notifications.seen[i].valueOf() == user._id.valueOf()){
+	// 		check = true
+	// 	}
+	// }
+	// notifications.find({seen: user._id}).exec((err,result)=>{
+	// 	console.log(result)
+	// })
+	// notifications.find().exec((err,result)=>{
+	// 	for(i=0; i<result.length; i++){
+	// 		for(j=0; j<Object.keys(result[i].seen.length); j++){
+	// 			console.log(ok)
+	// 		}
+	// 	}
+	// })
+
+	notifications.find().sort({created:1}).skip((perPage * page) - perPage).limit(perPage).populate('idcategory').exec((err, notifi) => {
 		notifications.countDocuments((err, count) => { 
 		  if (err) return next(err);
 		  res.render("notification", {
 			notifi, 
 			current: page, 
 			pages: Math.ceil(count / perPage) ,
-			user
+			user,
+			check
 		  });
 		});
 	  });
@@ -358,89 +378,131 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 	let perPage = 10; 
 	let page = req.params.page || 1; 
 	
-	let title = req.body.title
+	//let title = JSON.stringify(req.body.title)
+	let title = req.body.title 
 	let content = req.body.content
 	let fromday = req.body.fromday
 	let today = req.body.today
-  
-	//field = {title,content,fromday,today,seen}
-	//res.send(title + " " + content + " " + fromday + " " + today)
-  
-	// notification.findOne({title:title, content:content}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
-	//     notification.countDocuments((err, count) => { 
-	//       if (err) return next(err);
-	//       res.render("notification", {
-	//         notifi, 
-	//         current: page, 
-	//         pages: Math.ceil(count / perPage) 
-	//       });
-	//     });
-	//   });
-  
-	if((!title) & (!content) & (!fromday) & (!today)){
+	let check = false
+	let checkbox = req.body.checkbox
+   
+	if(checkbox){
+		notifications.find({seen: user}).exec(function(err, result){
+			console.log()
+		})
+	}else if((!title) && (!content) && (!fromday) && (!today)){
 	  res.redirect("1")
 	}else if(title){
-	  notifications.find({title:title}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
+	  notifications.find({}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 		notifications.countDocuments((err, count) => { 
 		  if (err) return next(err);
+		  	const data = notifi.filter(function(item){
+			return item.title.toLowerCase().indexOf(title.toLowerCase()) !== -1
+		  })
+		  console.log(data)
 		  res.render("notification", {
-			notifi:notifi, 
+			notifi:data, 
 			current: page, 
-			pages: Math.ceil(count / perPage) 
+			pages: Math.ceil(count / perPage),
+			user: req.user,
+			check
 		  });
 		});
-		console.log(notifi)
 	  });
 	}else if(content){
-	  notifications.find({content:content}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
+	  notifications.find({}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 		notifications.countDocuments((err, count) => { 
 		  if (err) return next(err);
+			const data = notifi.filter(function(item){
+				return item.content.toLowerCase().indexOf(content.toLowerCase()) !== -1
+			})
 		  res.render("notification", {
-			notifi, 
+			notifi:data, 
 			current: page, 
-			pages: Math.ceil(count / perPage) 
+			pages: Math.ceil(count / perPage),
+			user: req.user ,
+			check
 		  });
 		});
 	  });
 	}else if(fromday){
-	  notifications.find({fromday:fromday}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
+	  notifications.find({created:fromday}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 		notifications.countDocuments((err, count) => { 
 		  if (err) return next(err);
 		  res.render("notification", {
 			notifi, 
 			current: page, 
-			pages: Math.ceil(count / perPage) 
+			pages: Math.ceil(count / perPage),
+			user: req.user
 		  });
 		});
 	  });
 	}else if(today){
-	  notifications.find({today:today}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
+	  notifications.find({created:today}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 		notifications.countDocuments((err, count) => { 
 		  if (err) return next(err);
 		  res.render("notification", {
 			notifi, 
 			current: page, 
-			pages: Math.ceil(count / perPage) 
+			pages: Math.ceil(count / perPage),
+			user: req.user
 		  });
 		});
-	  });
+	});
+	// }else if(checkbox){
+	// 	// notifications.find({seen: user}).exec(function(err, result){
+	// 	// 	console.log("checkbox is checked")
+	// 	// })
+	// 	console.log("checkbox is checked")
 	}else{
+		notifications.find({seen: user}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
+			notifications.countDocuments((err, count) => { 
+			  if (err) return next(err);
+			  res.render("notification", {
+				notifi, 
+				current: page, 
+				pages: Math.ceil(count / perPage),
+				user: req.user
+			  });
+			});
+		  });
 	}
   });
   
-  //Show Notification Detail
+//Show Notification Detail
   
-  router.get('/notification/:page/notificationdetail/:id', isLoggedIn,function(req, res){
-	notifications.findOneAndUpdate({_id: req.params.id},{seen:true})
+  router.get('/notificationdetail/:id', isLoggedIn,function(req, res){
+	notifications.findOneAndUpdate({_id: req.params.id},{$push: {seen:req.user}}).exec()
+	notifications.findOneAndUpdate({_id: req.params.id},{seen:true}).exec()
 	notifications.findOne({_id: req.params.id}).populate('idcategory').exec(function(err, notice){
 	  res.render("notificationdetail", {notice, user:req.user})
 	})
   })
-  
-  router.get('/notificationdetail/:id', isLoggedIn,function(req, res){
-	notifications.findOneAndUpdate({_id: req.params.id},{seen:true}).exec()
-	notifications.findOne({_id: req.params.id}).populate('idcategory').exec(function(err, notice){
-	  res.render("notificationdetail", {notice, user:req.user})
+
+//faculity
+
+  router.get("/faculity", isLoggedIn, function(req,res){
+	let user = req.user
+	categories.find().exec(function(err,faculity){
+		res.render("faculity",{user,faculity})
+	})
+  })
+
+  router.get("/faculityNotification/:id", function(req, res){
+	let perPage = 10; 
+	let page = req.params.page || 1; 
+	let user = req.user
+
+	notifications.find({idcategory: req.params.id}).exec(function(err, notifi){
+		notifications.countDocuments((err, count) => { 
+			if (err) return next(err);
+			res.render("faculityNotification", {
+			  notifi, 
+			  current: page, 
+			  pages: Math.ceil(count / perPage) ,
+			  user
+			});
+		});
 	})
   })
 

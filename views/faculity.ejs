@@ -120,8 +120,7 @@
                     <%}%>
                     <span href="#" class="list-group-item"><i class="fa fa-th-list"></i> Phân loại thông báo <i class="fa fa-caret-down"></i></span>
                     <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
-                    <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-image"></i> Chủ đề</a>
-                    <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
+                    <a href="/notification/1" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
                     <span href="#" class="list-group-item"><i class="fa fa-users"></i> Cổng thông tin <i class="fa fa-caret-down"></i></span>
                     <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user"></i> Sinh viên</a>
                     <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user-graduate"></i> Học viên (Sau đại học)</a>
@@ -129,8 +128,27 @@
                 </div>
             </div>
         </nav>
-        <div class="content-body-2"> 
-            <!-- code vào đây ========================== -->
+        <div class="faculityPannel"> 
+            <div class="row nt__row">
+                <div class="col-12">
+                    <h4>Danh Sách Phòng Ban</h4>
+                    <hr>
+                    <div class="row">
+                        <% for(var i=0; i < faculity.length; i++){ %>
+                            <div class="col-3">
+                                <div class="card card_faculity">
+                                    <a href="/faculityNotification/<%= faculity[i]._id %>">
+                                        <center><img class="card-img-top" src="/images/logo.jpg" alt="Ảnh <%= faculity[i].name %>"></center>
+                                        <div class="nt__card-body">
+                                            <h5 class="card-title" ><%= faculity[i].name %></p>
+                                        </div>
+                                    </a>    
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

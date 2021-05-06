@@ -56,7 +56,7 @@
             </li>
         <%}%>
         <li>
-            <a href="/notification" class="nav__tablet-link"><i class="fa fa-bell"></i> Thông báo mới</a>
+            <a href="/notification/1" class="nav__tablet-link"><i class="fa fa-bell"></i> Thông báo mới</a>
         </li>
         <input type="checkbox" name="" class="nav__input-sidetop" id="nav-sidebar-inputtop" hidden>
         <label for="nav-sidebar-inputtop" href="#" class="nav__tablet-link"><i class="fa fa-th-list"></i> Phân loại thông báo <i class="fa fa-caret-down"></i></label>
@@ -111,26 +111,14 @@
     <div id="sidebar-wrapper">
         <div class="sidebar-heading">THÔNG BÁO MỚI</div>
         <div class="list-group notice">
-            <a href="#" class="list-group-item list-group-item-action list-group-odd">
-                <span class="notice-time">[Khoa công nghệ thông tin] - 8/1/2021</span><br>
-                <span class="notice-title">THÔNG BÁO NGHỈ HỌC TRÁNH COVID-19</span><br>
-                <span class="notice-content">Ngày 01/02/2021 chúng ta sẽ được nghĩ học!</span>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action list-group-even">
-                <span class="notice-time">[Khoa công nghệ thông tin] - 8/1/2021</span><br>
-                <span class="notice-title">THÔNG BÁO NGHỈ HỌC TRÁNH COVID-19</span><br>
-                <span class="notice-content">Ngày 01/02/2021 chúng ta sẽ được nghĩ học!</span>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action list-group-odd">
-                <span class="notice-time">[Khoa công nghệ thông tin] - 8/1/2021</span><br>
-                <span class="notice-title">THÔNG BÁO NGHỈ HỌC TRÁNH COVID-19</span><br>
-                <span class="notice-content">Ngày 01/02/2021 chúng ta sẽ được nghĩ học!</span>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action list-group-even">
-                <span class="notice-time">[Khoa công nghệ thông tin] - 8/1/2021</span><br>
-                <span class="notice-title">THÔNG BÁO NGHỈ HỌC TRÁNH COVID-19</span><br>
-                <span class="notice-content">Ngày 01/02/2021 chúng ta sẽ được nghĩ học!</span>
-            </a>
+            <% let a = 0 %>
+            <% notification.forEach(data => { %>
+                <a href="/notificationdetail/<%= data._id %>" class="list-group-item list-group-item-action <%if(a%2 == 0) {%> list-group-odd <%}else{%>list-group-even<%}%>">
+                    <span class="notice-time">[<%= data.idcategory.name %>] - <%= data.created.toLocaleDateString('en-GB') %></span><br>
+                    <span class="notice-title"><%= data.title %></span><br>
+                    <span class="notice-content">-- Xem chi tiết thông báo --</span>
+                </a>
+            <% a++}); %>
         </div>
         <a href="/notification/1" class="read-more"><u>Xem tất cả</u></a>
     </div>

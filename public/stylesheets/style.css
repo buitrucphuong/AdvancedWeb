@@ -28,6 +28,13 @@ a:hover {
     color: rgb(60, 166, 241);
 }
 
+.alert-socket {
+    width: 70%;
+    margin: auto;
+}
+.display-none {
+    display: none;
+}
 /* ===NAVBAR================================================================ */
 
 .search {
@@ -66,7 +73,7 @@ a:hover {
 }
 
 .nav__overlay {
-    z-index: 3;
+    z-index: 150;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -78,7 +85,7 @@ a:hover {
 }
 
 .nav__tablet {
-    z-index: 3;
+    z-index: 200;
     position: fixed;
     top: 0;
     left: 0;
@@ -208,7 +215,7 @@ a:hover {
 }
 
 .content-body__alert {
-    z-index: 1;
+    z-index: 100;
     margin-top: 58px;
     margin-left: 30%;
     margin-right: 30%;

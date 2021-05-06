@@ -9,7 +9,9 @@ var usersSchema = mongoose.Schema({
     email: String,
     username: String,
     password: String,
-    idcategory: [{ type: mongoose.Types.ObjectId, ref: 'categories' }]
+    idcategory: [{ type: mongoose.Types.ObjectId, ref: 'categories' }],
+    class: String,
+    faculty: String
 });
 
 var users = mongoose.model('users', usersSchema);

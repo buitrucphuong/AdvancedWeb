@@ -7,12 +7,12 @@ const session = require('express-session')
 const flash = require('connect-flash');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
+const socketio = require('socket.io')
 
 const database = require('./Database/database');
 const indexRouter = require('./routes/index');
 const User = require('./database/models/users')
-const credentials = require('./credentials')
-const config = credentials.authProviders
+const notifications = require('./database/models/notifications')
 
 const app = express();
 const env = app.get('env')
@@ -60,6 +60,41 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
+const PORT = 3000
+const httpServer = app.listen(PORT, () => console.log('http://localhost:' + PORT))
+const io = socketio(httpServer)
+
+app.post('/addnotice', roleManage, (req, res) => {
+	let newNotice = new notifications({
+		title: req.body.title,
+		content: req.body.content,
+		iduser: req.user._id,
+		created: Date.now(),
+		idcategory: req.body.category
+	});
+	newNotice.save(function(err) {
+		if (err) {
+			res.json({ kq: false, errMsg: err });
+		} else {
+			notifications.findById(newNotice._id).populate('idcategory').exec((err, noti) => {
+				io.sockets.emit('send', noti);
+				req.flash('success', 'Thêm thông báo thành công!')
+				backURL = req.header('Referer') || '/';
+				res.redirect(backURL);
+			})
+		}
+	})
+})
+
+io.on('connection', () => {
+});	
+
+function roleManage(req, res, next) {
+	if (req.isAuthenticated() && req.user.role == 'manage')
+		return next();
+	res.redirect('/');
+}
+
 app.use((req, res) => {
 	res.type('text/plain')
 	res.status(404)
@@ -73,5 +108,4 @@ app.use((err, req, res, next) => {
 	res.send('500 - Server Error')
 })
 
-const PORT = 3000
-app.listen(PORT, () => console.log('http://localhost:' + PORT))
+

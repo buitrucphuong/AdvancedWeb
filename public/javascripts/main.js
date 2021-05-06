@@ -73,7 +73,7 @@ $(document).ready(function(){
                                 <span class="card__username">${data.iduser.name}</span>
                             </a> °
                             <span class="card__time-up">${new Date(data.created).toLocaleString('en-JM')}</span>
-                            ${checkuser(data.iduser._id, pt.user._id, data._id)}
+                            ${checkuser_post(data.iduser._id, pt.user._id, data._id)}
                             <br>
                             <div>
                                 <p class="card__content-up">${data.content}</p>
@@ -102,6 +102,7 @@ $(document).ready(function(){
             });
             //Delete post==========================================
             delete_post(data._id)  
+            update_post(data._id) 
             i++;
         })
         $('#load_data').append(html);
@@ -121,12 +122,40 @@ $(document).ready(function(){
         var link = /^.*(youtu.be\/|v\/|embed\/|watch\?|youtube.com\/user\/[^#]*#([^\/]*?\/)*)\??v?=?([^#\&\?]*).*/
         var video = $("#post-video").val();
         var idVideo = video.match(link)
+        var image = $("#customFile").val();
+        var checkimage = image.split('.',2)[1]
+        var postcontent = $('#post-content').val()
 
         var formData = new FormData()
-        formData.append('content', $('#post-content').val().replace(/\r?\n/g, '<br/>')) 
-        formData.append('image', $('#customFile')[0].files[0])
+        formData.append('content', postcontent.replace(/\r?\n/g, '<br/>')) 
+        
+        if(postcontent == "" && !checkimage  && video == ""){
+            $("#errorStatus").html("Bạn chưa có gì để đăng?<br>");
+            $("#errorRadio").html("");
+            $("#errorImg").html("");
+            return false
+        }else{
+            $("#errorStatus").html("");
+        }
+
+        if(!checkimage){
+            $("#errorImg").html("");
+        }else if(checkimage != "bmp" && checkimage != "png" && checkimage != "gjf" && checkimage != "jpg" && checkimage != "jpeg") {
+            $("#errorImg").html("Chỉ được phép chọn ảnh!");
+            return false;
+        }else {
+            $("#errorImg").html("");
+            formData.append('image', $('#customFile')[0].files[0])
+        }
+        
         if(idVideo) {
             formData.append('video', idVideo[3])
+            $("#errorRadio").html("");
+        }else if(video == ""){
+            $("#errorRadio").html("");
+        }else{
+            $("#errorRadio").html("Địa chỉ youtube không hợp lệ");
+            return false;
         }
         
         $.ajax({
@@ -146,7 +175,7 @@ $(document).ready(function(){
                                     <span class="card__username">${data.user.name}</span>
                                 </a> °
                                 <span class="card__time-up">${new Date(data.content.created).toLocaleString('en-JM')}</span>
-                                ${checkuser(data.user._id, data.user._id, data.content._id)}
+                                ${checkuser_post(data.user._id, data.user._id, data.content._id)}
                                 <br>
                                 <div>
                                     <p class="card__content-up">${data.content.content}</p>
@@ -169,6 +198,7 @@ $(document).ready(function(){
                 $('[data-toggle="popover"]').popover({html:true}); 
                 //Delete post==========================================
                 delete_post(data.content._id) 
+                update_post(data.content._id) 
                 //==================================
                 $('#exampleModal').modal('hide');
                 $('#form-post').find('textarea').val('');
@@ -177,6 +207,7 @@ $(document).ready(function(){
                 $('#post-video').val('');
             }
         })
+        
     })
 
     //Funtion Input comment============================================
@@ -209,11 +240,22 @@ $(document).ready(function(){
             load_comment(limit_cm, begin, data._id, time)
         });
     }
-    //Function check option user ============================================================
+    //Function check option user for comments ============================================================
     function checkuser(idpostuser, idcurrentuser, id) {
         var option = ''
         if(idpostuser == idcurrentuser) {
             option += `<span tabindex="-1" class="d-inline-block" data-trigger="focus" data-toggle="popover" data-content="<a href='#delete' id='delete${id}'>Xóa</a>">
+                            <button class="btn"  style="pointer-events: none;" type="button" disabled><i class="fas fa-ellipsis-h"></i></button>
+                        </span>`
+        }
+        return option
+    }
+
+    //Function check option user for posts ============================================================
+    function checkuser_post(idpostuser, idcurrentuser, id) {
+        var option = ''
+        if(idpostuser == idcurrentuser) {
+            option += `<span tabindex="-1" class="d-inline-block" data-trigger="focus" data-toggle="popover" data-content="<a href='#delete' id='delete${id}'>Xóa</a> | <a href='#update' id='update${id}'>Sửa</a>">
                             <button class="btn"  style="pointer-events: none;" type="button" disabled><i class="fas fa-ellipsis-h"></i></button>
                         </span>`
         }
@@ -250,7 +292,7 @@ $(document).ready(function(){
                                 <img  class="mr-2" src="${data.iduser.pic}" width="35" height="35">
                             </a>
                             <div class="comment-content-text"> 
-                                <a href="/personal">
+                                <a href="/personal?id=${data.iduser._id}">
                                     <span class="card__username">${data.iduser.name}</span>
                                 </a> °
                                 <span class="card__time-up">${new Date(data.created).toLocaleString('en-JM')}</span>
@@ -296,7 +338,7 @@ $(document).ready(function(){
                                             <img  class="mr-2" src="${data.user.pic}" width="35" height="35">
                                         </a>
                                         <div class="comment-content-text"> 
-                                            <a href="/personal">
+                                            <a href="/personal?id=${data.user._id}">
                                                 <span class="card__username">${data.user.name}</span>
                                             </a> °
                                             <span class="card__time-up">${new Date(data.content.created).toLocaleString('en-JM')}</span>
@@ -348,12 +390,62 @@ $(document).ready(function(){
         });
     }
 
-    //Upload file====================================================
-    $(".custom-file-input").on("change", function() {
-        var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    //Function update post ==========================================
+    function update_post(id) {
+        $(document).on('click', '#update' + id, function(){
+            $.ajax({
+                url: "/update_post",
+                method: "POST",
+                data: {
+                    id: id
+                },
+                success: function(){ 
+                    console.log('success')
+                }
+            })
+        });
+    }
+    //Radio image and video =========================================
+    $('input[type="radio"]').click(function(){
+        if($('#imageRadio').is(":checked")){
+            $('#radioCheck').html(`<span>Chọn ảnh:</span>
+                                    <div class="custom-file mb-3">
+                                        <input type="file" class="custom-file-input" id="customFile" name="image">
+                                        <label class="custom-file-label" for="customFile">Chọn ảnh</label>
+                                        <span id="errorImg" class="error-input"></span>
+                                    </div>
+                                    <input type="hidden" class="form-control" id="post-video" name="video" placeholder="Nhập link youtube">`)
+        }
+        else if($('#videoRadio').is(":checked")){
+            $('#radioCheck').html(`<div class="custom-file mb-3 display-none">
+                                        <input type="file" class="custom-file-input" id="customFile" name="image">
+                                        <label class="custom-file-label" for="customFile">Chọn ảnh</label>
+                                    </div>
+                                    <span>Chọn video (Chỉ hỗ trợ Youtube):</span>
+                                    <input type="text" class="form-control" id="post-video" name="video" placeholder="Nhập link youtube">
+                                    <span id="errorRadio" class="error-input"></span>`)
+        }
+        custom_form()
     });
-
+    //Upload file====================================================
+    function custom_form() {
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    }
+    custom_form()
+    //Socket============================================
+    let socket = io();
+    socket.on("send", function(data)
+    {
+        $('#socketio').html(`<div class="fixed-top alert alert-primary alert-dismissible content-body__alert">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <i class="fas fa-bell"></i> 
+                                ${data.idcategory.name} vừa đăng thông báo mới: <a href="/notificationdetail/${data._id}">${data.title}</a>
+                            </div>`)
+    });
+    
     //Check validate login form=========================================
     $("#loginForm").submit(function(){
         var status = false;
@@ -498,6 +590,54 @@ $(document).ready(function(){
 
         return status;
     });
+    //Check validate update info form=========================================
+    $("#updateinfoForm").submit(function(){
+        var name = $("#name").val();
+        var classs = $("#class").val();
+        var faculty = $("#faculty").val();
+        var status = false;
+        if (name.trim() == "") {
+            $("#errorName").html("Vui lòng nhập tên hiển thị!");
+            status = false;
+        } else {
+            $("#errorName").html("");
+            status = true;
+        }
+
+        if (classs.trim() == "") {
+            $("#errorClass").html("Vui lòng nhập lớp!");
+            status = false;
+        } else {
+            $("#errorClass").html("");
+        }
+
+        if (faculty.trim() == "") {
+            $("#errorFaculty").html("Vui lòng nhập khoa!");
+            status = false;
+        } else {
+            $("#errorFaculty").html("");
+        }
+
+        return status;
+    });
+    //Check validate update avt form=========================================
+    $("#updateAvtForm").submit(function(){
+        var image = $("#image").val();
+        var checkimage = image.split('.',2)[1]
+        var status = false;
+        if (image.length < 1) {
+            $("#errorImage").html("Vui lòng chọn ảnh!");
+            status = false;
+        } else if(checkimage != "bmp" && checkimage != "png" && checkimage != "gjf" && checkimage != "jpg" && checkimage != "jpeg") {
+            $("#errorImage").html("Chỉ được phép chọn ảnh!");
+            status = false;
+        }else {
+            $("#errorImage").html("");
+            status = true;
+        }
+
+        return status;
+    });
     //Dislay error for Lognin page=================================
     window.setTimeout(function() {
         $(".alert-login").fadeTo(500, 0).slideUp(500, function(){
@@ -511,6 +651,7 @@ $(document).ready(function(){
     .catch( error => {
         console.error( error );
     });
+    
 });
 
 

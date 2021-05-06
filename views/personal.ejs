@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+    <title>Social</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js" integrity="sha512-2RDFHqfLZW8IhPRvQYmK9bTLfj/hddxGXQAred2wNZGkrKQkLGj8RCkXfRJPHlDerdHHIzTFaahq4s/P4V6Qig==" crossorigin="anonymous"></script>
+    <link href="/stylesheets/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="main-wrapper">
+        <%- include('./layouts/nav.ejs') %>
+        <div class="content-body">
+            <div class="row">
+                <div class="col-12">
+                    <div id="socketio"></div>
+                    <% if(message!=''){%>
+                    <div class="fixed-top alert alert-success alert-dismissible alert-login">
+                        <%= message %>
+                    </div>
+                    <% } %>
+                    <div class="card card--background">
+                        <div class="card__body card__body--avt">
+                            <img class="mr-2" src="<%= users.pic %>" width="150" height="150">
+                        </div>
+                    </div>
+                    <div class="card sticky-top">
+                        <div class="card__body card__body--name">
+                            <h4><%= users.name %> </h4>
+                        </div> 
+                    </div>
+                    <div class="card">
+                        <div class="card__body">
+                            <p class="card__introduce">Giới thiệu</p>
+                            <div class="card__info-intro">
+                                <i class="fas fa-suitcase"></i> <span>Lớp: <%if(users.class){%> <%= users.class %><%}else{%>__<%}%></span><br>
+                                <i class="fas fa-briefcase"></i> <span>Khoa: <%if(users.faculty){%> <%= users.faculty %><%}else{%>__<%}%></span><br>
+                                <% if(user._id.toString() == users._id.toString()) {%>
+                                <button type="button" data-toggle="modal" data-target="#exampleModal">Chỉnh sửa thông tin cá nhân</button>
+                                <button type="button" data-toggle="modal" data-target="#exampleModal1">Cập nhật ảnh đại diện</button>
+                                 <%}%>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="load_data"></div>
+                    <div id="load_data_message"></div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+        
+            <div class="modal-header">
+            <h4 class="modal-title">Chỉnh sửa thông tin cá nhân</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form action="/updateinfo" method="post" id="updateinfoForm">
+                <div class="modal-body">
+                    <span>Tên hiển thị:</span>
+                    <input value="<%= user.name %>" name="name" id="name" type="text" class="form-control" placeholder="Nhập tên hiển thị..">
+                    <span id="errorName" class="error-input"></span><br>
+                    <span>Lớp:</span>
+                    <input value="<%= user.class %>" name="class" id="class" type="text" class="form-control" placeholder="Nhập lớp..">
+                    <span id="errorClass" class="error-input"></span><br>
+                    <span>Khoa:</span>
+                    <input value="<%= user.faculty%>" name="faculty" id="faculty" type="text" class="form-control" placeholder="Nhập khoa..">
+                    <span id="errorFaculty" class="error-input"></span>
+                </div>
+            
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal1">
+        <div class="modal-dialog">
+        <div class="modal-content">
+        
+            <div class="modal-header">
+            <h4 class="modal-title">Cập nhật ảnh đại diện</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form action="/updateavt" method="post" id="updateAvtForm" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <span>Chọn ảnh:</span>
+                    <div class="custom-file mb-3">
+                        <input type="file" class="custom-file-input" id="image" name="pic">
+                        <label class="custom-file-label" for="customFile">Chọn ảnh</label>
+                        <span id="errorImage" class="error-input"></span>
+                    </div>
+                </div>
+            
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+    <script src="/javascripts/main.js"></script>
+    
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+    <title>Social</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js" integrity="sha512-2RDFHqfLZW8IhPRvQYmK9bTLfj/hddxGXQAred2wNZGkrKQkLGj8RCkXfRJPHlDerdHHIzTFaahq4s/P4V6Qig==" crossorigin="anonymous"></script>
+    <link href="/stylesheets/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="main-wrapper">
+        <%- include('./layouts/nav.ejs') %>
+        <% if(locals.message!=''){%>
+            <div class="fixed-top alert alert-success alert-dismissible alert-login">
+                <%= message %>
+            </div>
+        <% } %>
+        <div class="content-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card__body add-user">
+                            <form action="/addnotice" method="post" id="addnoticeForm">
+                                <h4 class="add-user__tittle">ĐĂNG THÔNG BÁO MỚI</h4> 
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label" for="title">Tiêu đề</label>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="title" name="title" placeholder="Nhập tiêu đề..">
+                                        <span id="errorTitle" class="error-input"></span>
+                                    </div>
+                                </div> 
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label" for="category">Chuyên mục</label>
+                                    <div class="col-9">
+                                        <select class="form-control" id="category" name="category">
+                                            <option value="">Vui lòng chọn</option>
+                                            <% category.forEach(data => { %>
+                                                <option value="<%= data._id %>"><%= data.name %></option>
+                                            <% }); %>
+                                        </select>
+                                        <span id="errorCategory" class="error-input"></span>
+                                    </div>
+                                </div> 
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label" for="content"> Nội dung:</label>
+                                </div> 
+                                <div class="form-group row">
+                                    <div class="col-12">
+                                        <textarea class="form-control" name="content" id="content" rows="10" cols="150"></textarea>
+                                        <span id="errorContent" class="error-input"></span>
+                                    </div>
+                                </div> 
+                                <div class="form-group row">
+                                    <div class="col-3">
+                                        <button type="submit" class="btn btn-primary">Thêm</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="javascripts/main.js"></script>
+</body>
+
+</html>

@@ -40,7 +40,7 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 	// 	}
 	// })
 
-	notifications.find().sort({created:1}).skip((perPage * page) - perPage).limit(perPage).populate('idcategory').exec((err, notifi) => {
+	notifications.find().sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).populate('idcategory').exec((err, notifi) => {
 		notifications.countDocuments((err, count) => { 
 		  if (err) return next(err);
 		  res.render("notification", {
@@ -48,7 +48,8 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 			current: page, 
 			pages: Math.ceil(count / perPage) ,
 			user,
-			check
+			check,
+			message: req.flash('success')
 		  });
 		});
 	  });
@@ -75,7 +76,7 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 	}else if((!title) && (!content) && (!fromday) && (!today)){
 	  res.redirect("1")
 	}else if(title){
-	  notifications.find({}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
+	  notifications.find({}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 		notifications.countDocuments((err, count) => { 
 		  if (err) return next(err);
 		  	const data = notifi.filter(function(item){
@@ -92,7 +93,7 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 		});
 	  });
 	}else if(content){
-	  notifications.find({}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
+	  notifications.find({}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 		notifications.countDocuments((err, count) => { 
 		  if (err) return next(err);
 			const data = notifi.filter(function(item){
@@ -108,7 +109,7 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 		});
 	  });
 	}else if(fromday){
-	  notifications.find({created:fromday}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
+	  notifications.find({created:fromday}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 		notifications.countDocuments((err, count) => { 
 		  if (err) return next(err);
 		  res.render("notification", {
@@ -120,7 +121,7 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 		});
 	  });
 	}else if(today){
-	  notifications.find({created:today}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
+	  notifications.find({created:today}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 		notifications.countDocuments((err, count) => { 
 		  if (err) return next(err);
 		  res.render("notification", {
@@ -137,7 +138,7 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 	// 	// })
 	// 	console.log("checkbox is checked")
 	}else{
-		notifications.find({seen: user}).sort({created:1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
+		notifications.find({seen: user}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 			notifications.countDocuments((err, count) => { 
 			  if (err) return next(err);
 			  res.render("notification", {

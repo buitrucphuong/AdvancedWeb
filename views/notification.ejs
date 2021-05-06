@@ -172,11 +172,22 @@
                     </form>
                         <div class="list-group">
                                 <div class="row">
+                                    <% if(message!=''){%>
+                                    <div class="fixed-top alert alert-success alert-dismissible alert-login">
+                                        <%= message %>
+                                    </div>
+                                    <% } %>
                                     <div id="socketio"></div>
                                   <% for(var i = 0; i < notifi.length; i++) { %>
+                                    <% if(notifi[i].iduser == user._id) { %> 
+                                    <div class="nt__update">
+                                        <button data-toggle="modal" data-target="#a<%= notifi[i]._id %>" class="nt__btn-notice">Xóa</button><button onclick="window.location.href='/updatenotice/<%=notifi[i]._id%>'" class="nt__btn-notice">Sửa</button>
+                                    </div>
+                                    <%}%>
                                     <a href="/notificationdetail/<%= notifi[i]._id %>" class="list-group-item list-group-item-action flex-column align-items-start itemnotification">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h5 class="mb-1 content"><%= notifi[i].title %></h5>
+                                            
                                         </div>
                                         <p class="mb-1 content"><%=notifi[i].idcategory.name %> | <%= notifi[i].created.toLocaleString("en-JM")  %> </p> 
                                         <% if (check == false){ %>
@@ -185,6 +196,26 @@
                                             <small class="text-muted"></small>
                                         <% } %>
                                     </a>
+                                    <!-- The Modal -->
+                                    <div class="modal fade" id="a<%= notifi[i]._id %>">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">
+                                                       <%= notifi[i].title %>
+                                                    </h4>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Bạn có chắc muốn xóa thông báo này?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                                                    <button type="button" class="btn btn-danger" onclick="location.href='/deletenotice/<%= notifi[i]._id %>'">Xóa</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                   <% } %>
                                 </div>
                                 <div class="row"> 

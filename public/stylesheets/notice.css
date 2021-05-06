@@ -185,6 +185,15 @@ medium{
     margin-top: 15px;
 }
 
+.nt__btn-notice {
+    border: none;
+    text-align: right;
+    background-color:  #dcdcb8;
+}
+.nt__update {
+    float: right;
+}
+
 @media only screen and (max-width: 1289px) {
     .content-body {
         padding-top: 36px;

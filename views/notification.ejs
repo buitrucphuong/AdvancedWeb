@@ -86,7 +86,7 @@
                 <label for="nav-sidebar-inputtop" href="#" class="nav__tablet-link"><i class="fa fa-th-list"></i> Phân loại thông báo <i class="fa fa-caret-down"></i></label>
                 <li class="nav-sidebar-litop">
                     <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
-                    <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
+                    <a href="/notification/1" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
                 </li>
                 <input type="checkbox" name="" class="nav__input-sidebot" id="nav-sidebar-inputbot" hidden>
                 <label for="nav-sidebar-inputbot" href="#" class="nav__tablet-link"><i class="fa fa-users"></i> Cổng thông tin <i class="fa fa-caret-down"></i></label>
@@ -121,8 +121,7 @@
                         <a href="/changepass" class="list-group-item list-group-item-action"><i class="fa fa-key"></i> Đổi mật khẩu</a>
                     <%}%>
                     <span href="#" class="list-group-item"><i class="fa fa-th-list"></i> Phân loại thông báo <i class="fa fa-caret-down"></i></span>
-                    <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
-                    <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-image"></i> Chủ đề</a>
+                    <a href="/faculity" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
                     <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
                     <span href="#" class="list-group-item"><i class="fa fa-users"></i> Cổng thông tin <i class="fa fa-caret-down"></i></span>
                     <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user"></i> Sinh viên</a>
@@ -131,7 +130,7 @@
                 </div>
             </div>
         </nav>
-        <div class="content-body-2"> 
+        <div class="nt__content-body-2"> 
             <!-- code vào đây ========================== -->
             <div class="col-12">
                 <div class="panel">
@@ -162,7 +161,7 @@
                                 <label class="form-check-label" for="seen">Chưa xem</label>
                             </div>
                             <div class="col-md-1 col-xs-12">
-                                <input type="checkbox" id="seen" class="form-control"> 
+                                <input type="checkbox" name="checkbox" id="seen" class="form-control" value="true"> 
                             </div> 
                             <div class="col-md-2 col-xs-12">
                                 <div class="text-center">
@@ -178,10 +177,9 @@
                                     <a href="/notificationdetail/<%= notifi[i]._id %>" class="list-group-item list-group-item-action flex-column align-items-start itemnotification">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h5 class="mb-1 content"><%= notifi[i].title %></h5>
-                                            <small class="text-muted"><%= notifi[i].created.toLocaleString("en-JM")  %></small>
                                         </div>
-                                        <p class="mb-1 content"><%= notifi[i].content %></p>
-                                        <% if (notifi[i].seen == false){ %>
+                                        <p class="mb-1 content"><%=notifi[i].idcategory.name %> | <%= notifi[i].created.toLocaleString("en-JM")  %> </p> 
+                                        <% if (check == false){ %>
                                             <small class="text-muted">Chưa xem</small>
                                         <% }else{ %>
                                             <small class="text-muted"></small>
@@ -192,7 +190,7 @@
                                 <div class="row"> 
                                   <% if(pages > 0) { %>
                                   <nav class="mx-auto">
-                                    <ul class="pagination" style="margin-top: 2rem;"> 
+                                    <ul class="pagination"> 
                                       <% if(current == 1) { %> 
                                           <li class="page-item disabled">
                                             <a class="page-link" href="/notification/1">First</a>

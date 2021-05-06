@@ -177,14 +177,15 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 	let page = req.params.page || 1; 
 	let user = req.user
 
-	notifications.find({idcategory: req.params.id}).exec(function(err, notifi){
+	notifications.find({idcategory: req.params.id}).populate('idcategory').exec(function(err, notifi){
 		notifications.countDocuments((err, count) => { 
 			if (err) return next(err);
 			res.render("faculityNotification", {
 			  notifi, 
 			  current: page, 
 			  pages: Math.ceil(count / perPage) ,
-			  user
+			  user,
+			  message: req.flash('success')
 			});
 		});
 	})

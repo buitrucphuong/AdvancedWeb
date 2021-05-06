@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/changepass', roleSys, async(req, res) => {
 	const user = await users.findOne({_id: req.user._id})
-	const notification = await notifications.find().limit(4).populate('idcategory')
+	const notification = await notifications.find().limit(4).sort({'_id' : -1}).populate('idcategory')
 	
 	res.render('changepass', {
 		user: user,

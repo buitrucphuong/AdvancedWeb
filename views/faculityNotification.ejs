@@ -5,14 +5,16 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/logo.jpg">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
     <title>Social</title>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700">
-    <!-- Custom styles for this template -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js" integrity="sha512-2RDFHqfLZW8IhPRvQYmK9bTLfj/hddxGXQAred2wNZGkrKQkLGj8RCkXfRJPHlDerdHHIzTFaahq4s/P4V6Qig==" crossorigin="anonymous"></script>
     <link href="/stylesheets/style.css" rel="stylesheet">
     <link href="/stylesheets/notice.css" rel="stylesheet">
 
@@ -78,12 +80,12 @@
                     </li>
                 <%}%>
                 <li>
-                    <a href="/notification" class="nav__tablet-link"><i class="fa fa-bell"></i> Thông báo mới</a>
+                    <a href="/notification/1" class="nav__tablet-link"><i class="fa fa-bell"></i> Thông báo mới</a>
                 </li>
                 <input type="checkbox" name="" class="nav__input-sidetop" id="nav-sidebar-inputtop" hidden>
                 <label for="nav-sidebar-inputtop" href="#" class="nav__tablet-link"><i class="fa fa-th-list"></i> Phân loại thông báo <i class="fa fa-caret-down"></i></label>
                 <li class="nav-sidebar-litop">
-                    <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
+                    <a href="/faculity" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
                     <a href="/notification/1" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
                 </li>
                 <input type="checkbox" name="" class="nav__input-sidebot" id="nav-sidebar-inputbot" hidden>
@@ -128,62 +130,93 @@
                 </div>
             </div>
         </nav>
-        <div class="nt__content-body-2"> 
+        <div class="nt__content-body-2 content-body content-body--notice"> 
             <!-- code vào đây ========================== -->
             <div class="col-12">
+                <div id="socketio"></div>
                 <div class="panel">
-                    <form method="POST" action="/notification/field">
-                        <div class="row">
+                    <form class="nt__form" method="POST" action="/notification/field">
+                        <div class="row nt_roww">
                             <div class="col-md-6 col-xs-12">
-                                <input type="text" name="title" class="form-control" placeholder="Tìm kiếm tên thông báo">
+                                <input type="text" name="title" class="form-control nt__inputtext" placeholder="Tìm kiếm tên thông báo">
                             </div>
                             <div class="col-md-6 col-xs-12">
-                                <input type="text" name="content" class="form-control" placeholder="Tìm kiếm nội dung thông báo">
+                                <input type="text" name="content" class="form-control nt__inputtext" placeholder="Tìm kiếm nội dung thông báo">
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row nt_roww">
                             <div class="col-md-1 col-xs-12">
-                                <label for="fromday">Từ ngày:</label>
+                                <label for="fromday" class="nt__label">Từ ngày:</label>
                             </div>
                             <div class="col-md-3 col-xs-12">
-                                <input type="date" name="fromday" id="fromday" class="form-control" placeholder="Từ ngày">
+                                <input type="date" name="fromday" id="fromday" class="form-control nt__inputdate" placeholder="Từ ngày">
                             </div>
                             <div class="col-md-1 col-xs-12">
-                                <label for="today">Đến ngày:</label>
+                                <label for="today" class="nt__label">Đến ngày:</label>
                             </div>
                             <div class="col-md-3 col-xs-12">
-                                <input type="date" name="today" id="today" class="form-control" placeholder="Đến ngày">
+                                <input type="date" name="today " id="today" class="form-control nt__inputdate" placeholder="Đến ngày">
                             </div>
                             <div class="col-md-1 col-xs-12">
-                                <label class="form-check-label" for="seen">Chưa xem</label>
+                                <label class="form-check-label nt__label" for="seen">Chưa xem</label>
                             </div>
                             <div class="col-md-1 col-xs-12">
-                                <input type="checkbox" id="seen" class="form-control"> 
+                                <input type="checkbox" id="seen" class="form-control nt__inputcheckbox"> 
                             </div> 
                             <div class="col-md-2 col-xs-12">
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-secondary">Tìm Kiếm</button>
+                                    <button type="submit" class="btn btn-secondary nt__button">Tìm Kiếm</button>
                                 </div>
                             </div>
                         </div>
                     </form>
                         <div class="list-group">
-                                <div class="row">
+                                <div class="row nt_roww">
+                                    <% if(message!=''){%>
+                                    <div class="fixed-top alert alert-success alert-dismissible alert-login">
+                                        <%= message %>
+                                    </div>
+                                    <% } %>
                                   <% for(var i = 0; i < notifi.length; i++) { %>
+                                    <% if(notifi[i].iduser == user._id) { %> 
+                                    <div class="nt__update">
+                                        <button data-toggle="modal" data-target="#a<%= notifi[i]._id %>" class="nt__btn-notice nt__button">Xóa</button><button onclick="window.location.href='/updatenotice/<%=notifi[i]._id%>'" class="nt__btn-notice nt__button">Sửa</button>
+                                    </div>
+                                    <%}%>
                                     <a href="/notificationdetail/<%= notifi[i]._id %>" class="list-group-item list-group-item-action flex-column align-items-start itemnotification">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1 content"><%= notifi[i].title %></h5>
+                                            <h5 class="mb-1 nt__content"><%= notifi[i].title %></h5>
                                         </div>
-                                        <p class="mb-1 content"><%=notifi[i].idcategory.name %> | <%= notifi[i].created.toLocaleString("en-JM")  %> </p> 
+                                        <p class="mb-1 nt__content"><%=notifi[i].idcategory.name %> | <%= notifi[i].created.toLocaleString("en-JM")  %> </p> 
                                         <% if (notifi[i].seen == false){ %>
                                             <small class="text-muted">Chưa xem</small>
                                         <% }else{ %>
                                             <small class="text-muted"></small>
                                         <% } %>
                                     </a>
+                                    <!-- The Modal -->
+                                    <div class="modal fade" id="a<%= notifi[i]._id %>">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">
+                                                       <%= notifi[i].title %>
+                                                    </h4>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Bạn có chắc muốn xóa thông báo này?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger nt__button" data-dismiss="modal">Hủy</button>
+                                                    <button type="button" class="btn btn-danger nt__button" onclick="location.href='/deletenotice/<%= notifi[i]._id %>'">Xóa</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                   <% } %>
                                 </div>
-                                <div class="row"> 
+                                <div class="row nt_roww"> 
                                   <% if(pages > 0) { %>
                                   <nav class="mx-auto">
                                     <ul class="pagination"> 
@@ -247,7 +280,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="javascripts/main.js"></script>
+    <script src="/javascripts/main.js"></script>
     
 </body>
 

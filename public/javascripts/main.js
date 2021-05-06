@@ -265,7 +265,7 @@ $(document).ready(function(){
     function check_image(data) {
         var img = ''
         if(data.image) {
-            img += `<img class="image-up" src="upload/${data.image}" width="100%" ><br><br>`
+            img += `<img class="image-up" src="${data.image}" width="100%" ><br><br>`
         }
         return img
     }

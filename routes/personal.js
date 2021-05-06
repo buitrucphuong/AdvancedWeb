@@ -3,6 +3,8 @@ const posts = require('./../database/models/posts');
 const comments = require('./../database/models/comments');
 const users = require('./../database/models/users');
 const notifications = require('./../database/models/notifications')
+const cloudinary = require('./imageHandle/cloudinary');
+const upload = require('./imageHandle/multer');
 const multer = require('multer');
 const {isLoggedIn, roleAdmin, roleManage, roleSys} = require('./auth.js');
 const router = express.Router();
@@ -66,54 +68,22 @@ router.post('/updateinfo', isLoggedIn, (req, res) => {
 	});
 })
 
-//update avatar
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, './public/upload')
-    },
-    filename: function(req, file, cb) {
-        cb(null, Date.now() + "-" + file.originalname)
-    }
-});
-
-var upload = multer({
-    storage: storage,
-    fileFilter: function(req, file, cb) {
-        if (file.mimetype == "image/bmp" ||
-            file.mimetype == "image/png" ||
-            file.mimetype == "image/gjf" ||
-            file.mimetype == "image/jpg" ||
-            file.mimetype == "image/jpeg") {
-            cb(null, true)
-        } else {
-            return cb(new Error('Only image are allowed!'))
-        }
-    }
-}).single("pic");
-
-router.post("/updateavt", function(req, res) {
-    upload(req, res, function(err) {
-		if (err instanceof multer.MulterError) {
-			console.log("A Multer error occurred when uploading.");
-		} else if (err) {
-			console.log("An unknown error occurred when uploading." + err);
-		} else{
-			users.findByIdAndUpdate({ _id: req.user._id }, {
-				$set: {
-					pic: '/upload/' + req.file.filename,
-				}
-			},
-			function(err, data) {
-				if (err) {
-					res.json({ kq: false, errMsg: err });
-				} else {
-					req.flash('success', 'Cập nhật ảnh đại diện thành công!');
-					backURL = req.header('Referer') || '/';
-                	res.redirect(backURL);
-				}
-			});
+router.post("/updateavt", upload.single("pic"), async(req, res) => {
+	const result = await cloudinary.uploader.upload(req.file.path);
+	await users.findByIdAndUpdate({ _id: req.user._id }, {
+		$set: {
+			pic: result.secure_url,
 		}
-    });
+	},
+	function(err, data) {
+		if (err) {
+			res.json({ kq: false, errMsg: err });
+		} else {
+			req.flash('success', 'Cập nhật ảnh đại diện thành công!');
+			backURL = req.header('Referer') || '/';
+			res.redirect(backURL);
+		}
+	});
 });
 
 module.exports = router;

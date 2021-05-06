@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var usersSchema = mongoose.Schema({
     uid: String,
     name: String,
-    pic: {type: String, default: '/images/user.png'},
+    pic: {type: String, default: 'https://res.cloudinary.com/dm1smalbq/image/upload/v1620325518/ImageAdvancedWeb/user_vjvmvt.png'},
     role: String,
     created: Date,
     email: String,

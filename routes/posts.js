@@ -2,65 +2,34 @@ const express = require('express');
 const posts = require('./../database/models/posts');
 const comments = require('./../database/models/comments');
 const users = require('./../database/models/users');
+const cloudinary = require('./imageHandle/cloudinary');
+const upload = require('./imageHandle/multer');
 const multer = require('multer');
 const {isLoggedIn, roleAdmin, roleManage, roleSys} = require('./auth.js');
 const router = express.Router();
 
-var storage = multer.diskStorage({
-	destination: function(req, file, cb) {
-		cb(null, './public/upload')
-	},
-	filename: function(req, file, cb) {
-		cb(null, Date.now() + "-" + file.originalname)
-	}
-});
-
-var upload = multer({
-	storage: storage,
-	fileFilter: function(req, file, cb) {
-		if (file.mimetype == "image/bmp" ||
-			file.mimetype == "image/png" ||
-			file.mimetype == "image/gjf" ||
-			file.mimetype == "image/jpg" ||
-			file.mimetype == "image/jpeg") {
-			cb(null, true)
-		} else {
-			return cb(new Error('Only image are allowed!'))
-		}
-	}
-}).single("image");
-
-router.post("/post", (req, res) => {
-	upload(req, res, (err) => {
-		if(req.file) {
-		if (err instanceof multer.MulterError) {
-			console.log("A Multer error occurred when uploading.");
-		} else if (err) {
-			console.log("An unknown error occurred when uploading." + err);
-		} else {
-			
-			var newPosts = new posts({
-				content: req.body.content,
-				image: req.file.filename,
-				iduser: req.user._id,
-				video: req.body.video,
-				created: Date.now()
-			});
-			newPosts.save(function(err){
-				if(err){
-				res.json({kq:false,errMsg:err});
-				}else{ 		
-					users.findOne({_id: req.user._id}).exec((err, user) => {
-						res.json({
-							content: newPosts,
-							user: user
-						})
+router.post("/post", upload.single("image"), async(req, res) => {
+	if(req.file) {
+		const result = await cloudinary.uploader.upload(req.file.path);
+		var newPosts = new posts({
+			content: req.body.content,
+			image: result.secure_url,
+			iduser: req.user._id,
+			created: Date.now()
+		});
+		newPosts.save(function(err){
+			if(err){
+			res.json({kq:false,errMsg:err});
+			}else{ 		
+				users.findOne({_id: req.user._id}).exec((err, user) => {
+					res.json({
+						content: newPosts,
+						user: user
 					})
-				}
-			})
-		}
-		}
-		else {
+				})
+			}
+		})
+	}else {
 		var newPosts = new posts({
 			content: req.body.content,
 			iduser: req.user._id,
@@ -79,9 +48,8 @@ router.post("/post", (req, res) => {
 				})
 			}
 		})
-		}
-	});
-});
+	}
+}); 
 
 router.get("/load_data", (req, res) => {
 	let time = req.query.time

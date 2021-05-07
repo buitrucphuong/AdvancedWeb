@@ -560,9 +560,11 @@ input[type="checkbox"]:after {
         margin-top: 57px;
     }
 
-    /* =====styles for Notification page========================================================== */
-
     .notification {
+        width: 100%;
+    }
+
+    .card--login {
         width: 100%;
     }
 }

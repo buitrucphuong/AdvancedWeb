@@ -9,7 +9,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const socketio = require('socket.io')
 
-const database = require('./Database/database');
+const database = require('./database/database');
 const indexRouter = require('./routes/index');
 const User = require('./database/models/users')
 const notifications = require('./database/models/notifications')

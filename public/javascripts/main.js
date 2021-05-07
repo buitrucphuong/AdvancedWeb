@@ -340,7 +340,7 @@ $(document).ready(function() {
                                                 <span class="card__username">${data.user.name}</span>
                                             </a> °
                                             <span class="card__time-up">${new Date(data.content.created).toLocaleString('en-JM')}</span>
-                                            <span tabindex="-1" class="d-inline-block" data-toggle="popover" data-content="<a href='#delete' id='delete${data.content._id}'>Xóa</a>">
+                                            <span tabindex="-1" class="d-inline-block" data-trigger="focus" data-toggle="popover" data-content="<a href='#delete' id='delete${data.content._id}'>Xóa</a>">
                                                 <button class="btn"  style="pointer-events: none;" type="button" disabled><i class="fas fa-ellipsis-h"></i></button>
                                             </span>
                                             <p>${data.content.content}</p>

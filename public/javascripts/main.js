@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function() {
     var limit = 10;
     var limit_cm = 5;
     var start = 0;
@@ -8,64 +8,64 @@ $(document).ready(function(){
     var urlParams = new URLSearchParams(window.location.search);
 
     //load and scroll=======================================
-    
-    if(urlParams.get('id')){
-        if(action == 'inactive') {
+
+    if (urlParams.get('id')) {
+        if (action == 'inactive') {
             action = 'active';
             load_post_data_personal(limit, start, time, urlParams.get('id'))
         }
-    }else {
-        if(action == 'inactive') {
+    } else {
+        if (action == 'inactive') {
             action = 'active';
             load_post_data(limit, start, time);
         }
     }
-    
-    $(window).scroll(function(){
-        if($(window).scrollTop() + $(window).height() > $("#load_data").height() && action == 'inactive'){
+
+    $(window).scroll(function() {
+        if ($(window).scrollTop() + $(window).height() > $("#load_data").height() && action == 'inactive') {
             action = 'active';
             start = start + limit;
-            setTimeout(function(){
-                if(urlParams.get('id')){
+            setTimeout(function() {
+                if (urlParams.get('id')) {
                     load_post_data_personal(limit, start, time, urlParams.get('id'))
-                }else {
+                } else {
                     load_post_data(limit, start, time);
-                } 
+                }
             }, 1000);
         }
     })
 
     // load post data personal=============================================    
-    function load_post_data_personal(limit, start, time, id){
+    function load_post_data_personal(limit, start, time, id) {
         $.ajax({
             type: 'GET',
             url: '/load_data_personal',
-            data: {limit: limit, start: start, time: time, id: id},
+            data: { limit: limit, start: start, time: time, id: id },
             cache: false,
             success: function(pt) {
                 load_post(pt)
             }
-        }); 
+        });
     }
 
     //load post data=============================================    
-    function load_post_data(limit, start, time){
+    function load_post_data(limit, start, time) {
         $.ajax({
             type: 'GET',
             url: '/load_data',
-            data: {limit: limit, start: start, time: time},
+            data: { limit: limit, start: start, time: time },
             cache: false,
             success: function(pt) {
                 load_post(pt)
             }
-        }); 
+        });
     }
 
     //function load post
     function load_post(pt) {
         var html = '';
         var i = 0;
-        pt.posts.forEach(function(data){
+        pt.posts.forEach(function(data) {
             html += `<div class="card" id="post-content${data._id}">
                         <div class="card__body">
                             <a href="/personal?id=${data.iduser._id}">
@@ -89,75 +89,74 @@ $(document).ready(function(){
                             </div>
                         </div>
                     </div>`;
-                    // <a href=""><i class="fa fa-share"></i> Chia sẻ</a>
-        
+            // <a href=""><i class="fa fa-share"></i> Chia sẻ</a>
+
             //Input comment ===================================
             input_comment(data, pt.user)
-            //Readmore comments======================================================
+                //Readmore comments======================================================
             var begin = 0
-            $(document).on('click', '#readmore' + data._id, function(){
+            $(document).on('click', '#readmore' + data._id, function() {
                 action_cm = 'active';
                 begin = begin + limit_cm
                 load_comment(limit_cm, begin, data._id, time)
             });
             //Delete post==========================================
-            delete_post(data._id)  
-            update_post(data._id) 
+            delete_post(data._id)
             i++;
         })
         $('#load_data').append(html);
-        $('[data-toggle="popover"]').popover({html:true}); 
-        if(pt.posts =='') {
+        $('[data-toggle="popover"]').popover({ html: true, delay: { hide: 150 } });
+        if (pt.posts == '') {
             $('#load_data_message').html("");
             action = 'active';
-        }else {
+        } else {
             $('#load_data_message').html("<div class='spinner-border text-warning' ></div>");
             action = 'inactive';
         }
     }
 
     //new post======================================================================
-    $("#form-post").submit(function(e){
+    $("#form-post").submit(function(e) {
         e.preventDefault();
         var link = /^.*(youtu.be\/|v\/|embed\/|watch\?|youtube.com\/user\/[^#]*#([^\/]*?\/)*)\??v?=?([^#\&\?]*).*/
         var video = $("#post-video").val();
         var idVideo = video.match(link)
         var image = $("#customFile").val();
-        var checkimage = image.split('.',2)[1]
+        var checkimage = image.split('.', 2)[1]
         var postcontent = $('#post-content').val()
 
         var formData = new FormData()
-        formData.append('content', postcontent.replace(/\r?\n/g, '<br/>')) 
-        
-        if(postcontent == "" && !checkimage  && video == ""){
+        formData.append('content', postcontent.replace(/\r?\n/g, '<br/>'))
+
+        if (postcontent == "" && !checkimage && video == "") {
             $("#errorStatus").html("Bạn chưa có gì để đăng?<br>");
             $("#errorRadio").html("");
             $("#errorImg").html("");
             return false
-        }else{
+        } else {
             $("#errorStatus").html("");
         }
 
-        if(!checkimage){
+        if (!checkimage) {
             $("#errorImg").html("");
-        }else if(checkimage != "bmp" && checkimage != "png" && checkimage != "gjf" && checkimage != "jpg" && checkimage != "jpeg") {
+        } else if (checkimage != "bmp" && checkimage != "png" && checkimage != "gjf" && checkimage != "jpg" && checkimage != "jpeg") {
             $("#errorImg").html("Chỉ được phép chọn ảnh!");
             return false;
-        }else {
+        } else {
             $("#errorImg").html("");
             formData.append('image', $('#customFile')[0].files[0])
         }
-        
-        if(idVideo) {
+
+        if (idVideo) {
             formData.append('video', idVideo[3])
             $("#errorRadio").html("");
-        }else if(video == ""){
+        } else if (video == "") {
             $("#errorRadio").html("");
-        }else{
+        } else {
             $("#errorRadio").html("Địa chỉ youtube không hợp lệ");
             return false;
         }
-        
+
         $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
@@ -166,7 +165,7 @@ $(document).ready(function(){
             processData: false,
             contentType: false,
             cache: false,
-            success: function(data){
+            success: function(data) {
                 var html = ``;
                 html += `<div class="card" id="post-content${data.content._id}">
                             <div class="card__body">
@@ -190,16 +189,15 @@ $(document).ready(function(){
                                 </div>
                             </div>
                         </div>`;
-                $('#new-post').append(html);   
-                
+                $('#new-post').append(html);
+
                 //Input comment=============================
                 input_comment(data.content, data.user)
 
-                $('[data-toggle="popover"]').popover({html:true}); 
+                $('[data-toggle="popover"]').popover({ html: true, delay: { hide: 150 } });
                 //Delete post==========================================
-                delete_post(data.content._id) 
-                update_post(data.content._id) 
-                //==================================
+                delete_post(data.content._id)
+                    //==================================
                 $('#exampleModal').modal('hide');
                 $('#form-post').find('textarea').val('');
                 $('#customFile').val('');
@@ -207,12 +205,12 @@ $(document).ready(function(){
                 $('#post-video').val('');
             }
         })
-        
+
     })
 
     //Funtion Input comment============================================
     function input_comment(data, user) {
-        $(document).one('click', '.' + data._id, function(){
+        $(document).one('click', '.' + data._id, function() {
             var inputComment = `<hr><div class="comment">
                                     <a href="/personal?id=${user._id}">
                                         <img  class="mr-2" src="${user.pic}" width="35" height="35">
@@ -232,10 +230,10 @@ $(document).ready(function(){
                                 <div id="cm${data._id}"></div>
                                 <a href="#readmore" id="readmore${data._id}"></a>
                                 `
-            $( '#' + data._id).append(inputComment);
+            $('#' + data._id).append(inputComment);
             //Add new comment ============================================
             add_comment(data._id)
-            //Load comment =============================================
+                //Load comment =============================================
             var begin = 0
             load_comment(limit_cm, begin, data._id, time)
         });
@@ -243,19 +241,19 @@ $(document).ready(function(){
     //Function check option user for comments ============================================================
     function checkuser(idpostuser, idcurrentuser, id) {
         var option = ''
-        if(idpostuser == idcurrentuser) {
-            option += `<span tabindex="-1" class="d-inline-block" data-trigger="focus" data-toggle="popover" data-content="<a href='#delete' id='delete${id}'>Xóa</a>">
+        if (idpostuser == idcurrentuser) {
+            option += `<span tabindex="0" class="d-inline-block" data-trigger="focus" data-toggle="popover" data-content="<a href='#delete' id='delete${id}'>Xóa</a>">
                             <button class="btn"  style="pointer-events: none;" type="button" disabled><i class="fas fa-ellipsis-h"></i></button>
                         </span>`
+
         }
         return option
     }
-
     //Function check option user for posts ============================================================
     function checkuser_post(idpostuser, idcurrentuser, id) {
         var option = ''
-        if(idpostuser == idcurrentuser) {
-            option += `<span tabindex="-1" class="d-inline-block" data-trigger="focus" data-toggle="popover" data-content="<a href='#delete' id='delete${id}'>Xóa</a> | <a href='#update' id='update${id}'>Sửa</a>">
+        if (idpostuser == idcurrentuser) {
+            option += `<span tabindex="-1" class="d-inline-block" data-trigger="focus" data-toggle="popover" data-content="<a href='#delete' id='delete${id}'>Xóa</a>">
                             <button class="btn"  style="pointer-events: none;" type="button" disabled><i class="fas fa-ellipsis-h"></i></button>
                         </span>`
         }
@@ -264,7 +262,7 @@ $(document).ready(function(){
     //Function check image=========================================================
     function check_image(data) {
         var img = ''
-        if(data.image) {
+        if (data.image) {
             img += `<img class="image-up" src="${data.image}" width="100%" ><br><br>`
         }
         return img
@@ -272,21 +270,21 @@ $(document).ready(function(){
 
     function check_video(data) {
         var video = ''
-        if(data.video) {
+        if (data.video) {
             video += `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${data.video}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
         }
         return video
     }
     //Function Load comments function=================================
-    function load_comment(limit, start, id, time){
+    function load_comment(limit, start, id, time) {
         $.ajax({
             type: 'GET',
             url: '/load_comment',
-            data: {limit: limit, start: start, id: id, time: time},
+            data: { limit: limit, start: start, id: id, time: time },
             cache: false,
             success: function(cm) {
                 var html = ``;
-                cm.comment.forEach(function(data){
+                cm.comment.forEach(function(data) {
                     html += `<div class="comment-content" id="comment-content${data._id}">
                             <a href="/personal?id=${data.iduser._id}">
                                 <img  class="mr-2" src="${data.iduser.pic}" width="35" height="35">
@@ -300,29 +298,29 @@ $(document).ready(function(){
                                 <p>${data.content}</p>
                             </div>
                         </div>`
-                    //delete comment ======================
-                    delete_comment(data._id)   
-                    
+                        //delete comment ======================
+                    delete_comment(data._id)
+
                 })
                 $('#cm' + id).append(html);
-                
-                $('[data-toggle="popover"]').popover({html:true}); 
-                
+
+                $('[data-toggle="popover"]').popover({ html: true, delay: { hide: 150 } });
+
                 //===========================
-                if(cm.comment =='') {
+                if (cm.comment == '') {
                     $('#readmore' + id).html("");
                     action_cm = 'active';
-                }else {
+                } else {
                     $('#readmore' + id).html("Xem thêm bình luận");
                     action_cm = 'inactive';
                 }
             }
-        }); 
+        });
     }
 
     //Function add new comment
     function add_comment(id) {
-        $('#form-comment' + id).submit(function(e){
+        $('#form-comment' + id).submit(function(e) {
             e.preventDefault();
             var content = $("#commenContent" + id).val();
             $.ajax({
@@ -332,7 +330,7 @@ $(document).ready(function(){
                     idpost: id
                 },
                 method: "POST",
-                success: function(data){ 
+                success: function(data) {
                     var newcomment = `<div class="comment-content" id="comment-content${data.content._id}">
                                         <a href="/personal?id=${data.user._id}">
                                             <img  class="mr-2" src="${data.user.pic}" width="35" height="35">
@@ -342,18 +340,18 @@ $(document).ready(function(){
                                                 <span class="card__username">${data.user.name}</span>
                                             </a> °
                                             <span class="card__time-up">${new Date(data.content.created).toLocaleString('en-JM')}</span>
-                                            <span tabindex="-1" class="d-inline-block" data-trigger="focus" data-toggle="popover" data-content="<a href='#delete' id='delete${data.content._id}'>Xóa</a>">
+                                            <span tabindex="-1" class="d-inline-block" data-toggle="popover" data-content="<a href='#delete' id='delete${data.content._id}'>Xóa</a>">
                                                 <button class="btn"  style="pointer-events: none;" type="button" disabled><i class="fas fa-ellipsis-h"></i></button>
                                             </span>
                                             <p>${data.content.content}</p>
                                         </div>
                                     </div>`
-                    //delete comment ======================
-                    delete_comment(data.content._id)  
-                    //====================================
-                    $( '#ipcm' + id).append(newcomment);
+                        //delete comment ======================
+                    delete_comment(data.content._id)
+                        //====================================
+                    $('#ipcm' + id).append(newcomment);
                     $('#form-comment' + id).find('#commenContent' + id).val('');
-                    $('[data-toggle="popover"]').popover({html:true}); 
+                    $('[data-toggle="popover"]').popover({ html: true, delay: { hide: 150 } });
                 }
             })
         })
@@ -361,14 +359,14 @@ $(document).ready(function(){
 
     //Function Delete comment ==========================================
     function delete_comment(id) {
-        $(document).on('click', '#delete' + id, function(){
+        $(document).on('click', '#delete' + id, function() {
             $.ajax({
                 url: "/delete_comment",
                 method: "POST",
                 data: {
                     id: id
                 },
-                success: function(){ 
+                success: function() {
                     $('#comment-content' + id).remove();
                 }
             })
@@ -376,38 +374,22 @@ $(document).ready(function(){
     }
     //Function delete post ==========================================
     function delete_post(id) {
-        $(document).on('click', '#delete' + id, function(){
+        $(document).on('click', '#delete' + id, function() {
             $.ajax({
                 url: "/delete_post",
                 method: "POST",
                 data: {
                     id: id
                 },
-                success: function(){ 
+                success: function() {
                     $('#post-content' + id).remove();
                 }
             })
         });
     }
-
-    //Function update post ==========================================
-    function update_post(id) {
-        $(document).on('click', '#update' + id, function(){
-            $.ajax({
-                url: "/update_post",
-                method: "POST",
-                data: {
-                    id: id
-                },
-                success: function(){ 
-                    console.log('success')
-                }
-            })
-        });
-    }
     //Radio image and video =========================================
-    $('input[type="radio"]').click(function(){
-        if($('#imageRadio').is(":checked")){
+    $('input[type="radio"]').click(function() {
+        if ($('#imageRadio').is(":checked")) {
             $('#radioCheck').html(`<span>Chọn ảnh:</span>
                                     <div class="custom-file mb-3">
                                         <input type="file" class="custom-file-input" id="customFile" name="image">
@@ -415,8 +397,7 @@ $(document).ready(function(){
                                         <span id="errorImg" class="error-input"></span>
                                     </div>
                                     <input type="hidden" class="form-control" id="post-video" name="video" placeholder="Nhập link youtube">`)
-        }
-        else if($('#videoRadio').is(":checked")){
+        } else if ($('#videoRadio').is(":checked")) {
             $('#radioCheck').html(`<div class="custom-file mb-3 display-none">
                                         <input type="file" class="custom-file-input" id="customFile" name="image">
                                         <label class="custom-file-label" for="customFile">Chọn ảnh</label>
@@ -435,19 +416,18 @@ $(document).ready(function(){
         });
     }
     custom_form()
-    //Socket============================================
+        //Socket============================================
     let socket = io();
-    socket.on("send", function(data)
-    {
+    socket.on("send", function(data) {
         $('#socketio').html(`<div class="fixed-top alert alert-primary alert-dismissible content-body__alert">
                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                                 <i class="fas fa-bell"></i> 
                                 ${data.idcategory.name} vừa đăng thông báo mới: <a href="/notificationdetail/${data._id}">${data.title}</a>
                             </div>`)
     });
-    
+
     //Check validate login form=========================================
-    $("#loginForm").submit(function(){
+    $("#loginForm").submit(function() {
         var status = false;
         if ($("#username").val().trim() == "") {
             $("#errorUsername").html("Vui lòng nhập username!");
@@ -461,12 +441,12 @@ $(document).ready(function(){
             $("#errorPassword").html("Vui lòng nhập password!");
             status = false;
         } else {
-            $("#errorPassword").html("");   
+            $("#errorPassword").html("");
         }
         return status;
     });
     //Check validate add user form=========================================
-    $("#adduserForm").submit(function(){
+    $("#adduserForm").submit(function() {
         var checkbox = $(".idcategory:checked").length;
         var displayName = $("#displayName").val();
         var username = $("#username").val();
@@ -484,31 +464,31 @@ $(document).ready(function(){
         if (username.trim() == "") {
             $("#errorUsername").html("Vui lòng nhập tên đăng nhập!");
             status = false;
-        }else if(username.length < 6) {
+        } else if (username.length < 6) {
             $("#errorUsername").html("Tên đăng nhập ít nhất 6 ký tự!");
             status = false;
-        }else {
+        } else {
             $("#errorUsername").html("");
         }
 
         if (password.trim() == "") {
             $("#errorPassword").html("Vui lòng nhập mật khẩu!");
             status = false;
-        }else if(password.length < 6) {
+        } else if (password.length < 6) {
             $("#errorPassword").html("Tên đăng nhập ít nhất 6 ký tự!");
             status = false;
         } else {
-            $("#errorPassword").html("");   
+            $("#errorPassword").html("");
         }
 
         if (repassword.trim() == "") {
             $("#errorRepassword").html("Vui lòng xác nhận lại mật khẩu!");
             status = false;
-        }else if(password != repassword) {
+        } else if (password != repassword) {
             $("#errorRepassword").html("Mật khẩu không khớp!");
             status = false;
         } else {
-            $("#errorRepassword").html("");   
+            $("#errorRepassword").html("");
         }
 
         if (checkbox < 1) {
@@ -521,11 +501,10 @@ $(document).ready(function(){
         return status;
     });
     //Check validate add notice form=========================================
-    $("#addnoticeForm").submit(function(){
+    $("#addnoticeForm").submit(function() {
         var title = $("#title").val();
         var category = $("#category").val();
         var content = $("#content").val();
-        console.log(content)
         var status = false;
         if (title.trim() == "") {
             $("#errorTitle").html("Vui lòng nhập tiêu đề!");
@@ -552,7 +531,7 @@ $(document).ready(function(){
         return status;
     });
     //Check validate change password form=========================================
-    $("#changpassForm").submit(function(){
+    $("#changpassForm").submit(function() {
         var currentpass = $("#currentpass").val();
         var newpass = $("#newpass").val();
         var repass = $("#repass").val();
@@ -560,7 +539,7 @@ $(document).ready(function(){
         if (currentpass.trim() == "") {
             $("#errorCurrentpass").html("Vui lòng nhập mật khẩu hiện tại!");
             status = false;
-        }else if(currentpass.length < 6) {
+        } else if (currentpass.length < 6) {
             $("#errorCurrentpass").html("Mật khẩu ít nhất 6 ký tự!");
             status = false;
         } else {
@@ -571,7 +550,7 @@ $(document).ready(function(){
         if (newpass.trim() == "") {
             $("#errornNewpass").html("Vui lòng nhập mật khẩu mới!");
             status = false;
-        }else if(newpass.length < 6) {
+        } else if (newpass.length < 6) {
             $("#errornNewpass").html("Mật khẩu ít nhất 6 ký tự!");
             status = false;
         } else {
@@ -581,7 +560,7 @@ $(document).ready(function(){
         if (repass.trim() == "") {
             $("#errorRepass").html("Vui lòng xác nhận lại mật khẩu!");
             status = false;
-        }else if(newpass != repass) {
+        } else if (newpass != repass) {
             $("#errorRepass").html("Mật khẩu không khớp!");
             status = false;
         } else {
@@ -591,7 +570,7 @@ $(document).ready(function(){
         return status;
     });
     //Check validate update info form=========================================
-    $("#updateinfoForm").submit(function(){
+    $("#updateinfoForm").submit(function() {
         var name = $("#name").val();
         var classs = $("#class").val();
         var faculty = $("#faculty").val();
@@ -621,17 +600,17 @@ $(document).ready(function(){
         return status;
     });
     //Check validate update avt form=========================================
-    $("#updateAvtForm").submit(function(){
+    $("#updateAvtForm").submit(function() {
         var image = $("#image").val();
-        var checkimage = image.split('.',2)[1]
+        var checkimage = image.split('.', 2)[1]
         var status = false;
         if (image.length < 1) {
             $("#errorImage").html("Vui lòng chọn ảnh!");
             status = false;
-        } else if(checkimage != "bmp" && checkimage != "png" && checkimage != "gjf" && checkimage != "jpg" && checkimage != "jpeg") {
+        } else if (checkimage != "bmp" && checkimage != "png" && checkimage != "gjf" && checkimage != "jpg" && checkimage != "jpeg") {
             $("#errorImage").html("Chỉ được phép chọn ảnh!");
             status = false;
-        }else {
+        } else {
             $("#errorImage").html("");
             status = true;
         }
@@ -640,20 +619,16 @@ $(document).ready(function(){
     });
     //Dislay error for Lognin page=================================
     window.setTimeout(function() {
-        $(".alert-login").fadeTo(500, 0).slideUp(500, function(){
-            $(this).remove(); 
+        $(".alert-login").fadeTo(500, 0).slideUp(500, function() {
+            $(this).remove();
         });
     }, 6000);
 
     //Ckeditor for textarea content==================================
     ClassicEditor
-    .create( document.querySelector('.add-user #content') )
-    .catch( error => {
-        console.error( error );
-    });
-    
+        .create(document.querySelector('.add-user #content'))
+        .catch(error => {
+            console.error(error);
+        });
+
 });
-
-
-
-

@@ -20,25 +20,8 @@ router.use('/', require('./posts'))
 router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 	let perPage = 10
 	let page = req.params.page || 1
-  
 	let user = req.user
 	let check = false
-	// for(i=0; i<notifications.length; i++){
-	// 	console(notifications.seen[i])
-	// 	if(notifications.seen[i].valueOf() == user._id.valueOf()){
-	// 		check = true
-	// 	}
-	// }
-	// notifications.find({seen: user._id}).exec((err,result)=>{
-	// 	console.log(result)
-	// })
-	// notifications.find().exec((err,result)=>{
-	// 	for(i=0; i<result.length; i++){
-	// 		for(j=0; j<Object.keys(result[i].seen.length); j++){
-	// 			console.log(ok)
-	// 		}
-	// 	}
-	// })
 
 	notifications.find().sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).populate('idcategory').exec((err, notifi) => {
 		notifications.countDocuments((err, count) => { 
@@ -53,7 +36,7 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 		  });
 		});
 	  });
-  });
+  	});
   
   //Show Notification With Field & Pagination 
   
@@ -92,9 +75,28 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 				const data = notifi.filter(function(item){
 					return item.content.toLowerCase().indexOf(content.toLowerCase()) !== -1
 				})
-				console.log(data)
 				res.render("notification", {
 					notifi:data, 
+					current: page, 
+					pages: Math.ceil(count / perPage),
+					user: req.user,
+					check,
+					message:""
+				});
+			});
+		});
+	}else if((fromday) && (today)){
+		let datefrom = new Date(fromday)
+		datefrom.setDate(datefrom.getUTCDate())
+		datefrom = new Date(datefrom.setHours(0,0,0,0))
+		let dateto = new Date(today)
+		dateto.setDate(dateto.getUTCDate())
+		dateto = new Date(dateto.setHours(23,59,59,999))
+		notifications.find({$and: [{created: {$lte: dateto}}, {created: {$gte: datefrom}} ]}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
+			notifications.countDocuments((err, count) => { 
+				if (err) return next(err);
+				res.render("notification", {
+					notifi, 
 					current: page, 
 					pages: Math.ceil(count / perPage),
 					user: req.user,
@@ -151,28 +153,7 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 				});
 			});
 		});
-	}else if((fromday) && (today)){
-		let datefrom = new Date(fromday)
-		datefrom.setDate(datefrom.getUTCDate())
-		datefrom = new Date(datefrom.setHours(0,0,0,0))
-		let dateto = new Date(today)
-		dateto.setDate(dateto.getUTCDate())
-		dateto = new Date(dateto.setHours(23,59,59,999))
-		notifications.find({$and: [{created: {$lte: dateto}}, {created: {$gte: datefrom}} ]}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
-			notifications.countDocuments((err, count) => { 
-				if (err) return next(err);
-				res.render("notification", {
-					notifi, 
-					current: page, 
-					pages: Math.ceil(count / perPage),
-					user: req.user,
-					check,
-					message:""
-				});
-			});
-		});
-	}
-	else{
+	}else{
 		res.redirect("1")
 	}
   });
@@ -180,7 +161,7 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 //Show Notification Detail
   
   router.get('/notificationdetail/:id', isLoggedIn,function(req, res){
-	notifications.findOneAndUpdate({_id: req.params.id},{$push: {seen:req.user}}).exec()
+	notifications.findOneAndUpdate({$and:[{_id: req.params.id},{seen: {$nin: req.user._id}}]},{$push: {seen:req.user}}).exec()
 	notifications.findOne({_id: req.params.id}).populate('idcategory').exec(function(err, notice){
 	  res.render("notificationdetail", {notice, user:req.user})
 	})
@@ -215,17 +196,6 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 				});
 			});
 		}) 
-	})
-  })
-
-  router.get("/test",function(req, res){
-	var i,j
-	notifications.find({}).exec(function(err,result){
-		for(i=0; i<result.length; i++){
-			for(j=0; j<result[i].seen.length; j++){
-				console.log(result[i].seen[j])
-			}
-		}
 	})
   })
 

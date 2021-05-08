@@ -129,6 +129,10 @@ p.content{
     margin-left: 30%;
 }
 
+.nt__seen{
+    background-color: #dae0e7;
+}
+
 .faculityPannel h4{
     color:#333365;
 }

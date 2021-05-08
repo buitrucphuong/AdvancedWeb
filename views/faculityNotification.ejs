@@ -81,7 +81,10 @@
                                         <button data-toggle="modal" data-target="#a<%= notifi[i]._id %>" class="nt__btn-notice nt__button">Xóa</button><button onclick="window.location.href='/updatenotice/<%=notifi[i]._id%>'" class="nt__btn-notice nt__button">Sửa</button>
                                     </div>
                                     <%}%>
-                                    <a href="/notificationdetail/<%= notifi[i]._id %>" class="list-group-item list-group-item-action flex-column align-items-start itemnotification">
+                                    <% if(notifi[i].seen.indexOf(user._id) >=0){%>
+                                        <% check = true %>
+                                    <% } %>
+                                    <a href="/notificationdetail/<%= notifi[i]._id %>" class="list-group-item list-group-item-action flex-column align-items-start itemnotification <% if (check == false){ %>nt__seen <% }%>">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h5 class="mb-1 nt__content"><%= notifi[i].title %></h5>
                                         </div>
@@ -112,6 +115,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <% check = false %>
                                   <% } %>
                                 </div>
                                 <div class="row nt_roww"> 

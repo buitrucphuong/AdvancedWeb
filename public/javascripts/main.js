@@ -122,13 +122,13 @@ $(document).ready(function() {
         var video = $("#post-video").val();
         var idVideo = video.match(link)
         var image = $("#customFile").val();
-        var checkimage = image.split('.', 2).splice(-1,1)
+        var checkimage = image.split('.').splice(-1,1)
         var postcontent = $('#post-content').val()
 
         var formData = new FormData()
         formData.append('content', postcontent.replace(/\r?\n/g, '<br/>'))
 
-        if (postcontent == "" && !checkimage && video == "") {
+        if (postcontent == "" && checkimage=="" && video == "") {
             $("#errorStatus").html("Bạn chưa có gì để đăng?<br>");
             $("#errorRadio").html("");
             $("#errorImg").html("");
@@ -137,7 +137,7 @@ $(document).ready(function() {
             $("#errorStatus").html("");
         }
 
-        if (!checkimage) {
+        if (checkimage=="") {
             $("#errorImg").html("");
         } else if (checkimage != "bmp" && checkimage != "png" && checkimage != "gjf" && checkimage != "jpg" && checkimage != "jpeg") {
             $("#errorImg").html("Chỉ được phép chọn ảnh!");

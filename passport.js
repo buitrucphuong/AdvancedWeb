@@ -68,14 +68,10 @@ module.exports = function(passport) {
     }));
 
     passport.serializeUser(function(user, done) {
-        //done(null, user.id);
         done(null, user);
     });
 
     passport.deserializeUser(function(user, done) {
-        // User.findById(id, function(err, user) {
-        //     done(err, user);
-        // });
         done(null, user);
     });
 }

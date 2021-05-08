@@ -196,7 +196,7 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 	})
   })
 
-  router.get("/faculityNotification/:id", function(req, res){
+  router.get("/faculityNotification/:id",isLoggedIn, function(req, res){
 	let perPage = 10; 
 	let page = req.params.page || 1; 
 	let user = req.user;

@@ -4,13 +4,6 @@
     margin-right: 10px;
 }
 
-.single-line {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
- }
-
 
 .nt__form{
     background-color: #dcdcb8;

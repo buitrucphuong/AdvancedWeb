@@ -122,7 +122,7 @@ $(document).ready(function() {
         var video = $("#post-video").val();
         var idVideo = video.match(link)
         var image = $("#customFile").val();
-        var checkimage = image.split('.', 2)[1]
+        var checkimage = image.split('.', 2).splice(-1,1)
         var postcontent = $('#post-content').val()
 
         var formData = new FormData()
@@ -602,7 +602,7 @@ $(document).ready(function() {
     //Check validate update avt form=========================================
     $("#updateAvtForm").submit(function() {
         var image = $("#image").val();
-        var checkimage = image.split('.', 2)[1]
+        var checkimage = image.split('.').splice(-1,1)
         var status = false;
         if (image.length < 1) {
             $("#errorImage").html("Vui lòng chọn ảnh!");

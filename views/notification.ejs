@@ -88,12 +88,6 @@
                     <a href="/notification/1" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
                 </li>
                 <input type="checkbox" name="" class="nav__input-sidebot" id="nav-sidebar-inputbot" hidden>
-                <label for="nav-sidebar-inputbot" href="#" class="nav__tablet-link"><i class="fa fa-users"></i> Cổng thông tin <i class="fa fa-caret-down"></i></label>
-                <li class="nav-sidebar-libot">
-                    <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-user"></i> Sinh viên</a>
-                    <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-user-graduate"></i> Học viên (Sau đại học)</a>
-                    <a href="#" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-user-tie"></i> Sinh viên (Ban cao đẳng/TCCN)</a>
-                </li>
                 <li>
                     <a class="nav__tablet-link"  href="/personal?id=<%= user._id %>">
                         <img  class="mr-2" src="<%= user.pic %>" width="28" height="28"><b><%= user.name %></b>
@@ -122,10 +116,6 @@
                     <span href="#" class="list-group-item"><i class="fa fa-th-list"></i> Phân loại thông báo <i class="fa fa-caret-down"></i></span>
                     <a href="/faculity" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
                     <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
-                    <span href="#" class="list-group-item"><i class="fa fa-users"></i> Cổng thông tin <i class="fa fa-caret-down"></i></span>
-                    <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user"></i> Sinh viên</a>
-                    <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user-graduate"></i> Học viên (Sau đại học)</a>
-                    <a href="#" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-user-tie"></i> Sinh viên (Ban cao đẳng/TCCN)</a>
                 </div>
             </div>
         </nav>
@@ -169,6 +159,10 @@
                             </div>
                         </div>
                     </form>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Thông báo</li>
+                    </ul>
                         <div class="list-group">
                                 <div class="row nt_roww">
                                     <% if(message!=''){%>

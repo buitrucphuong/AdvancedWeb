@@ -199,19 +199,22 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
   router.get("/faculityNotification/:id", function(req, res){
 	let perPage = 10; 
 	let page = req.params.page || 1; 
-	let user = req.user
+	let user = req.user;
 
-	notifications.find({idcategory: req.params.id}).populate('idcategory').exec(function(err, notifi){
-		notifications.countDocuments((err, count) => { 
-			if (err) return next(err);
-			res.render("faculityNotification", {
-			  notifi, 
-			  current: page, 
-			  pages: Math.ceil(count / perPage) ,
-			  user,
-			  message: req.flash('success')
+	notifications.find({idcategory: req.params.id}).sort({_id: -1}).populate('idcategory').exec(function(err, notifi){
+		categories.findById(req.params.id).exec((err, category) => {
+			notifications.find({idcategory: req.params.id}).countDocuments((err, count) => { 
+				if (err) return next(err);
+				res.render("faculityNotification", {
+				notifi, 
+				current: page, 
+				pages: Math.ceil(count / perPage) ,
+				user,
+				message: req.flash('success'),
+				category
+				});
 			});
-		});
+		}) 
 	})
   })
 

@@ -1,0 +1,102 @@
+<nav class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm bg-white navbar-index">
+    <label for="nav-tablet-input" class="nav__bars-btn">
+        <i class="fas fa-bars"></i>
+    </label>
+    <li class="nav-item nav-item-search">
+        <a href="/"><img  class="mr-2" src="https://res.cloudinary.com/dm1smalbq/image/upload/v1620325529/ImageAdvancedWeb/logo_x6rvrd.jpg" width="28" height="28"></a> 
+        
+        <form id="searchForm" action="/search" method="get">
+            <input type="search" class="form-control search" name="search" id="search" placeholder="Tìm kiếm...">  
+        </form>
+         
+        <a class="nav-link nav-item-md"  href="/personal?id=<%= user._id %>">
+            <img  class="mr-2" src="<%= user.pic %>" width="28" height="28"><b><%= user.name %></b>
+        </a>
+    </li>
+    
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        </ul>
+        <ul class="navbar-nav  mt-lg-0">
+            <li class="nav-item nav-item-mduser">
+                <a class="nav-link"  href="/personal?id=<%= user._id %>">
+                    <img  class="mr-2" src="<%= user.pic %>" width="28" height="28"><b><%= user.name %></b>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link sign-out" href="/logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<input type="checkbox" name="" class="nav__input" id="nav-tablet-input" hidden>
+<label for="nav-tablet-input" class="nav__bars-btn">
+    <i class="fas fa-bars"></i>
+</label>
+<label for="nav-tablet-input" class="nav__overlay"></label>
+
+<nav class="nav__tablet nav__tablet-input">
+    <label for="nav-tablet-input" class="nav__tablet-close">
+        <i class="fas fa-times"></i>    
+    </label>
+    <ul class="navbar-nav nav__tablet-list">
+        <li>
+            <a href="/" class="nav__tablet-link"><i class="fa fa-home"></i> Trang chủ</a>
+        </li>
+        <% if(locals.user.role == "admin"){ %>
+            <li>
+                <a href="/adduser" class="nav__tablet-link"><i class="fa fa-user-plus"></i>Thêm tài khoản</a>
+            </li>
+        <%}%>
+        <% if(locals.user.role == "manage"){ %>
+            <li>
+                <a href="/addnotice" class="nav__tablet-link"><i class="fa fa-plus"></i> Đăng thông báo mới</a>
+            </li>
+        <% } %>
+        <% if(locals.user.role == "admin" || locals.user.role == "manage"){ %>
+            <li>
+                <a href="/changepass" class="nav__tablet-link"><i class="fa fa-key"></i> Đổi mật khẩu</a>
+            </li>
+        <%}%>
+        <li>
+            <a href="/notification/1" class="nav__tablet-link"><i class="fa fa-bell"></i> Thông báo mới</a>
+        </li>
+        <input type="checkbox" name="" class="nav__input-sidetop" id="nav-sidebar-inputtop" hidden>
+        <label for="nav-sidebar-inputtop" href="#" class="nav__tablet-link"><i class="fa fa-th-list"></i> Phân loại thông báo <i class="fa fa-caret-down"></i></label>
+        <li class="nav-sidebar-litop">
+            <a href="/faculity" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
+            <a href="/notification/1" class="nav__tablet-link">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
+        </li>
+        <input type="checkbox" name="" class="nav__input-sidebot" id="nav-sidebar-inputbot" hidden>
+        <li>
+            <a class="nav__tablet-link"  href="/personal?id=<%= user._id %>">
+                <img  class="mr-2" src="<%= user.pic %>" width="28" height="28"><b><%= user.name %></b>
+            </a>
+        </li>
+        <li>
+            <a class="nav__tablet-link sign-out" href="/logout"><i class="fa fa-sign-out-alt"></i> Đăng xuất</a>
+        </li>
+    </ul>
+</nav>
+<!-- notification-sidebar -->
+<nav class="nk-sidebar ">           
+    <div id="sidebar-wrapper">
+        <div class="sidebar-heading">DANH MỤC </div>
+        <div class="list-group list-group-flush">
+            <a href="/" class="list-group-item list-group-item-action"><i class="fa fa-home"></i> Trang chủ</a>
+            <% if(locals.user.role == "admin"){ %>
+                <a href="/adduser" class="list-group-item list-group-item-action"><i class="fa fa-user-plus"></i> Thêm tài khoản</a>
+            <% } %>
+            <% if(locals.user.role == "manage"){ %>
+                <a href="/addnotice" class="list-group-item list-group-item-action"><i class="fa fa-plus"></i> Đăng thông báo mới</a>
+            <% } %>
+            <% if(locals.user.role == "admin" || locals.user.role == "manage"){ %>
+                <a href="/changepass" class="list-group-item list-group-item-action"><i class="fa fa-key"></i> Đổi mật khẩu</a>
+            <%}%>
+            <span href="#" class="list-group-item"><i class="fa fa-th-list"></i> Phân loại thông báo <i class="fa fa-caret-down"></i></span>
+            <a href="/faculity" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-users"></i> Phòng ban</a>
+            <a href="/notification/1" class="list-group-item list-group-item-action">&emsp;&emsp;<i class="fa fa-th-list"></i> Tất cả thông báo</a>
+        </div>
+    </div>
+</nav>

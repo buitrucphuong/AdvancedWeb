@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://res.cloudinary.com/dm1smalbq/image/upload/v1620325529/ImageAdvancedWeb/logo_x6rvrd.jpg">
+    <title>Social</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js" integrity="sha512-2RDFHqfLZW8IhPRvQYmK9bTLfj/hddxGXQAred2wNZGkrKQkLGj8RCkXfRJPHlDerdHHIzTFaahq4s/P4V6Qig==" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" />
+    <link href="/stylesheets/style.css" rel="stylesheet">
+</head>
+<body>
+    <% if(message!=''){%>
+    <div class="fixed-top alert alert-danger alert-dismissible alert-login">
+        <%= message %>
+    </div>
+    <% } %>
+    <div class="container form-login">
+      <form action="/login" method="post" id="loginForm">
+          <div class="card card--login">
+              <div class="card__body">
+                 <h3>Đăng nhập</h3>
+                  <input type="text" class="form-control thinking" id="username" name="username" placeholder="Username">
+                  <span id="errorUsername" class="error-input"></span>
+                  <input type="password" class="form-control thinking" id="password" name="password" placeholder="Password">
+                  <span id="errorPassword" class="error-input"></span>
+                  <input type="submit" class="btn btn-primary" value="Đăng nhập">
+                  <a href="/auth/google" class="google btn btn-google"><i class="fa fa-google fa-fw">
+                    </i> Đăng nhập với mail sinh viên
+                  </a>
+              </div>
+          </div>
+       </form>
+    </div>
+    <script src="/javascripts/main.js"></script>
+</body>
+</html>

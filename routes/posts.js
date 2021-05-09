@@ -57,10 +57,13 @@ router.get("/load_data", (req, res) => {
     let start = parseInt(req.query.start);
     users.findOne({ _id: req.user._id }).exec((err, user) => {
         posts.find({ created: { $lt: time } }).limit(limit).skip(start).populate('iduser').sort({ '_id': -1 }).exec(async(err, pt) => {
+            
             const countComment = await Promise.all(pt.map(async(i) => {
                 const comment = await comments.countDocuments({ idpost: i._id })
                 return comment
             }))
+
+            
             res.send({
                 posts: pt,
                 countComment: countComment,
@@ -69,6 +72,8 @@ router.get("/load_data", (req, res) => {
         });
     });
 });
+
+
 
 router.post("/delete_post", (req, res) => {
     posts.findByIdAndDelete(req.body.id, function(err, data) {

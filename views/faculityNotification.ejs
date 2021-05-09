@@ -31,6 +31,7 @@
                 <div class="panel">
                     <form class="nt__form" method="POST" action="/notification/field">
                         <div class="row nt_roww">
+                            <div id="socketio"></div>
                             <div class="col-md-6 col-xs-12">
                                 <input type="text" name="title" class="form-control nt__inputtext" placeholder="Tìm kiếm tên thông báo">
                             </div>
@@ -49,13 +50,13 @@
                                 <label for="today" class="nt__label">Đến ngày:</label>
                             </div>
                             <div class="col-md-3 col-xs-12">
-                                <input type="date" name="today " id="today" class="form-control nt__inputdate" placeholder="Đến ngày">
+                                <input type="date" name="today" id="today" class="form-control nt__inputdate" placeholder="Đến ngày">
                             </div>
                             <div class="col-md-1 col-xs-12">
                                 <label class="form-check-label nt__label" for="seen">Chưa xem</label>
                             </div>
                             <div class="col-md-1 col-xs-12">
-                                <input type="checkbox" id="seen" class="form-control nt__inputcheckbox"> 
+                                <input type="checkbox" name="checkbox" id="seen" class="form-control nt__inputcheckbox" value="true"> 
                             </div> 
                             <div class="col-md-2 col-xs-12">
                                 <div class="text-center">
@@ -125,11 +126,11 @@
                                     <ul class="pagination"> 
                                       <% if(current == 1) { %> 
                                           <li class="page-item disabled">
-                                            <a class="page-link" href="/faculityNotification/1">First</a>
+                                            <a class="page-link" href="/faculityNotification/<%=category._id%>?page=1">First</a>
                                           </li>
                                       <% } else { %>
                                           <li class="page-item">
-                                            <a class="page-link" href="/faculityNotification/1">First</a>
+                                            <a class="page-link" href="/faculityNotification/<%=category._id%>?page=1">First</a>
                                           </li>
                                       <% } %>
                                       <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %> 
@@ -141,13 +142,13 @@
                                       <% for(; i <= (Number(current) + 2) && i <= pages; i++) { %>
                                         <% if(i == current) { %>
                                           <li class="page-item active">
-                                            <a class="page-link" href="/faculityNotification/<%= i %>/">
+                                            <a class="page-link" href="/faculityNotification/<%=category._id%>?page=<%= i %>">
                                             <%= i %>
                                             </a>
                                           </li>
                                       <% } else { %>
                                           <li class="page-item">
-                                            <a class="page-link" href="/faculityNotification/<%= i %>/">
+                                            <a class="page-link" href="/faculityNotification/<%=category._id%>?page=<%= i %>">
                                             <%= i %>
                                             </a>
                                           </li>
@@ -166,7 +167,7 @@
                                           </li>
                                       <% } else { %>
                                           <li class="page-item">
-                                            <a class="page-link" href="/faculityNotification/<%= pages %>/">
+                                            <a class="page-link" href="/faculityNotification/<%=category._id%>?page=<%= pages %>">
                                               Last
                                             </a>
                                           </li>

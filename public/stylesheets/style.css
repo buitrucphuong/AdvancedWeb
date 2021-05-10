@@ -222,6 +222,11 @@ a:hover {
     font-weight: lighter;
 }
 
+.notice--overflow {
+    overflow-y : scroll; 
+    max-height: 550px;
+}
+
 /* =====styles CONTENT for index page and personal page========================================================== */
 
 .content-body{
@@ -776,5 +781,9 @@ p.content{
     .notification, .content-body--notice, .card--login {
         width: 100%;
         box-sizing: unset;
+    }
+
+    body {
+        padding: 0px 15px;
     }
 }

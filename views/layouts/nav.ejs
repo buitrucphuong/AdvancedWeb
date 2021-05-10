@@ -102,16 +102,16 @@
 <nav class="nk-sidebarright">           
     <div id="sidebar-wrapper">
         <div class="sidebar-heading">THÔNG BÁO MỚI</div>
-        <div class="list-group notice">
+        <a href="/notification/1" class="read-more"><u>Xem tất cả</u></a><br>
+        <div class="list-group notice notice--overflow">
             <% let a = 0 %>
             <% notification.forEach(data => { %>
                 <a href="/notificationdetail/<%= data._id %>" class="list-group-item list-group-item-action <%if(a%2 == 0) {%> list-group-odd <%}else{%>list-group-even<%}%>">
                     <span class="notice-time">[<%= data.idcategory.name %>] - <%= data.created.toLocaleDateString('en-GB') %></span><br>
                     <span class="notice-title double-line"><%= data.title %></span><br>
-                    <!-- <span class="notice-content">-- Xem chi tiết thông báo --</span> -->
                 </a>
             <% a++}); %>
         </div>
-        <a href="/notification/1" class="read-more"><u>Xem tất cả</u></a>
+        
     </div>
 </nav>

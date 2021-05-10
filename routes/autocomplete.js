@@ -16,7 +16,7 @@ router.get('/autocomplete', async(req, res) => {
 router.get('/search',isLoggedIn, async(req, res) => {
     	const search = req.query.search
     	const user = await users.findOne({_id: req.user._id})
-	const notification = await notifications.find().limit(4).sort({'_id' : -1}).populate('idcategory')
+	const notification = await notifications.find().limit(6).sort({'_id' : -1}).populate('idcategory')
     	const alluser = await users.find({});
     	const data = alluser.filter(function(item) {
         	return item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1

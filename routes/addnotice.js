@@ -6,7 +6,7 @@ const {isLoggedIn, roleAdmin, roleManage, roleSys} = require('./auth.js');
 
 router.get('/addnotice', roleManage, async(req, res) => {
 	const user = await users.findOne({_id: req.user._id})
-	const notification = await notifications.find().limit(4).sort({'_id' : -1}).populate('idcategory')
+	const notification = await notifications.find().limit(6).sort({'_id' : -1}).populate('idcategory')
 	const acc = await users.findById(req.user._id).populate('idcategory')
 	
 	res.render('addnotice',{
@@ -19,7 +19,7 @@ router.get('/addnotice', roleManage, async(req, res) => {
 
 router.get('/updatenotice/:id', roleManage, async(req, res) => {
 	const user = await users.findOne({_id: req.user._id})
-	const notification = await notifications.find().limit(4).sort({'_id' : -1}).populate('idcategory')
+	const notification = await notifications.find().limit(6).sort({'_id' : -1}).populate('idcategory')
 	const acc = await users.findById(req.user._id).populate('idcategory')
 	const notice = await notifications.findById(req.params.id)
 	res.render('updatenotice',{

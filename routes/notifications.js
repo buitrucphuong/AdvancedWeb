@@ -12,20 +12,21 @@ const router = express.Router();
 router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 	let perPage = 10
 	let page = req.params.page || 1
-	let user = req.user
 	let check = false
 
 	notifications.find().sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).populate('idcategory').exec((err, notifi) => {
-		notifications.countDocuments((err, count) => { 
-		  if (err) return next(err);
-		  res.render("notification", {
-			notifi, 
-			current: page, 
-			pages: Math.ceil(count / perPage) ,
-			user,
-			check,
-			message: req.flash('success')
-		  });
+		users.findOne({ _id: req.user._id }).exec((err, user) => {
+			notifications.countDocuments((err, count) => { 
+			if (err) return next(err);
+			res.render("notification", {
+				notifi, 
+				current: page, 
+				pages: Math.ceil(count / perPage) ,
+				user,
+				check,
+				message: req.flash('success')
+			});
+			});
 		});
 	  });
   	});
@@ -35,7 +36,6 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
   router.post("/notification/field", isLoggedIn,(req, res, next) => {
 	let perPage = 10
 	let page = req.params.page || 1
-	let user = req.user
 	let title = req.body.title 
 	let content = req.body.content
 	let fromday = req.body.fromday
@@ -45,32 +45,36 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 
 	if(title){
 		notifications.find({}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
-			if (err) return next(err);
-			const data = notifi.filter(function(item){
-				return item.title.toLowerCase().indexOf(title.toLowerCase()) !== -1
-			})
-			res.render("notification", {
-				notifi:data, 
-				current: page, 
-				pages: Math.ceil(data.length / perPage),
-				user: req.user,
-				check,
-				message:""
+			users.findOne({ _id: req.user._id }).exec((err, user) => {
+				if (err) return next(err);
+				const data = notifi.filter(function(item){
+					return item.title.toLowerCase().indexOf(title.toLowerCase()) !== -1
+				})
+				res.render("notification", {
+					notifi:data, 
+					current: page, 
+					pages: Math.ceil(data.length / perPage),
+					user: user,
+					check,
+					message:""
+				});
 			});
 		});
 	}else if(content){
 		notifications.find({}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
-			if (err) return next(err);
-			const data = notifi.filter(function(item){
-				return item.content.toLowerCase().indexOf(content.toLowerCase()) !== -1
-			})
-			res.render("notification", {
-				notifi:data, 
-				current: page, 
-				pages: Math.ceil(data.length / perPage),
-				user: req.user,
-				check,
-				message:""
+			users.findOne({ _id: req.user._id }).exec((err, user) => {
+				if (err) return next(err);
+				const data = notifi.filter(function(item){
+					return item.content.toLowerCase().indexOf(content.toLowerCase()) !== -1
+				})
+				res.render("notification", {
+					notifi:data, 
+					current: page, 
+					pages: Math.ceil(data.length / perPage),
+					user: user,
+					check,
+					message:""
+				});
 			});
 		});
 	}else if((fromday) && (today)){
@@ -82,14 +86,16 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 		dateto = new Date(dateto.setHours(23,59,59,999))
 		notifications.find({$and: [{created: {$lte: dateto}}, {created: {$gte: datefrom}} ]}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 			notifications.find({$and: [{created: {$lte: dateto}}, {created: {$gte: datefrom}} ]}).countDocuments((err, count) => { 
-				if (err) return next(err);
-				res.render("notification", {
-					notifi, 
-					current: page, 
-					pages: Math.ceil(count / perPage),
-					user: req.user,
-					check,
-					message:""
+				users.findOne({ _id: req.user._id }).exec((err, user) => {
+					if (err) return next(err);
+					res.render("notification", {
+						notifi, 
+						current: page, 
+						pages: Math.ceil(count / perPage),
+						user: user,
+						check,
+						message:""
+					});
 				});
 			});
 		});
@@ -99,14 +105,16 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 		date = new Date(date.setHours(0,0,0,0))
 		notifications.find({created: {$gte: date}}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 			notifications.find({created: {$gte: date}}).countDocuments((err, count) => { 
-				if (err) return next(err);
-				res.render("notification", {
-					notifi, 
-					current: page, 
-					pages: Math.ceil(count / perPage),
-					user: req.user,
-					check,
-					message:""
+				users.findOne({ _id: req.user._id }).exec((err, user) => {
+					if (err) return next(err);
+					res.render("notification", {
+						notifi, 
+						current: page, 
+						pages: Math.ceil(count / perPage),
+						user: user,
+						check,
+						message:""
+					});
 				});
 			});
 		});
@@ -116,28 +124,32 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
 		date = new Date(date.setHours(23,59,59,999))
 		notifications.find({created: {$lte: date}}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 			notifications.find({created: {$lte: date}}).countDocuments((err, count) => { 
-				if (err) return next(err);
-				res.render("notification", {
-					notifi, 
-					current: page, 
-					pages: Math.ceil(count / perPage),
-					user: req.user,
-					check,
-					message:""
+				users.findOne({ _id: req.user._id }).exec((err, user) => {
+					if (err) return next(err);
+					res.render("notification", {
+						notifi, 
+						current: page, 
+						pages: Math.ceil(count / perPage),
+						user: user,
+						check,
+						message:""
+					});
 				});
 			});
 		});
 	}else if(checkbox){
 		notifications.find({seen: {$nin: user._id}}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).exec((err, notifi) => {
 			notifications.find({seen: {$nin: user._id}}).countDocuments((err, count) => { 
-				if (err) return next(err);
-				res.render("notification", {
-					notifi, 
-					current: page, 
-					pages: Math.ceil(count / perPage),
-					user: req.user,
-					check,
-					message:""
+				users.findOne({ _id: req.user._id }).exec((err, user) => {
+					if (err) return next(err);
+					res.render("notification", {
+						notifi, 
+						current: page, 
+						pages: Math.ceil(count / perPage),
+						user: user,
+						check,
+						message:""
+					});
 				});
 			});
 		});
@@ -148,39 +160,43 @@ router.get("/notification/:page",isLoggedIn, (req, res, next) => {
   
 //Show Notification Detail
   
-  router.get('/notificationdetail/:id', isLoggedIn,function(req, res){
+router.get('/notificationdetail/:id', isLoggedIn,function(req, res){
 	notifications.findOneAndUpdate({$and:[{_id: req.params.id},{seen: {$nin: req.user._id}}]},{$push: {seen:req.user}}).exec()
 	notifications.findOne({_id: req.params.id}).populate('idcategory').exec(function(err, notice){
-	  res.render("notificationdetail", {notice, user:req.user})
+		users.findOne({ _id: req.user._id }).exec((err, user) => {
+			res.render("notificationdetail", {notice, user: user})
+		})
 	})
-  })
+})
 
 
 //faculity
 
   router.get("/faculity", isLoggedIn, function(req,res){
-	let user = req.user
-	categories.find().exec(function(err,faculity){
-		res.render("faculity",{user,faculity})
+	users.findOne({ _id: req.user._id }).exec((err, user) => {
+		categories.find().exec(function(err,faculity){
+			res.render("faculity",{user:user,faculity})
+		})
 	})
   })
 
   router.get("/faculityNotification/:id",isLoggedIn, function(req, res){
 	let perPage = 10; 
 	let page = req.query.page || 1; 
-	let user = req.user;
 	let check = false
 	notifications.find({idcategory: req.params.id}).sort({created:-1}).skip((perPage * page) - perPage).limit(perPage).populate('idcategory').exec((err, notifi) => {
 		categories.findById(req.params.id).exec((err, category) => {
 			notifications.find({idcategory: req.params.id}).countDocuments((err, count) => { 
-				res.render("faculityNotification", {
-				notifi, 
-				current: page, 
-				pages: Math.ceil(count / perPage) ,
-				user,
-				message: req.flash('success'),
-				category,
-				check
+				users.findOne({ _id: req.user._id }).exec((err, user) => {
+					res.render("faculityNotification", {
+					notifi, 
+					current: page, 
+					pages: Math.ceil(count / perPage) ,
+					user,
+					message: req.flash('success'),
+					category,
+					check
+					});
 				});
 			});
 		}) 

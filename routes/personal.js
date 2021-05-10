@@ -10,7 +10,7 @@ const {isLoggedIn, roleAdmin, roleManage, roleSys} = require('./auth.js');
 const router = express.Router();
 
 router.get('/personal', isLoggedIn, async(req, res) => {
-	notifications.find().limit(4).populate('idcategory').sort({'_id' : -1}).exec((err, notification) => {
+	notifications.find().limit(6).populate('idcategory').sort({'_id' : -1}).exec((err, notification) => {
 		users.findOne({_id: req.user._id}).exec((err, user) => {
 			users.findOne({_id: req.query.id}).exec((err, users) => {
 				res.render('personal', {

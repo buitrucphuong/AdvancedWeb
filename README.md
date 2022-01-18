@@ -5,7 +5,7 @@ Web demo: https://advancedweb.herokuapp.com/
 
 Admin account: username: admin, password: 111111
 
-Deparment Account: username: khoacntt, 111111
+Deparment Account: username: khoacntt, password: 111111
 
 In the project directory, you can run:
 
